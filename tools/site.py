@@ -50,6 +50,8 @@ for line in (ROOT / "lab" / "tests.md").read_text().splitlines():
                       "expected": cells[-3], "actual": cells[-2], "status": cells[-1]})
 svg = (ROOT / "diagrams" / "topology-blueprint.svg").read_text()
 svg = svg[svg.index("<svg"):]
+import re
+svg = re.sub(r"<title>.*?</title>", "", svg, flags=re.S)
 
 data = {"vlans": vlans, "floors": floors, "bom": bom, "configs": configs, "tests": tests,
         "checks": checks, "ssids": D["ssids"], "policy": D["policy"], "meta": D["meta"],

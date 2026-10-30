@@ -111,23 +111,22 @@ h2{font:600 17px/1.3 var(--sans);color:var(--text)}
 .note{color:var(--muted);font-size:14px;max-width:780px}
 
 /* ---------- blueprint frame ---------- */
-.bp{position:relative;margin-top:14px;background-color:var(--bp);color:var(--bp-ink);
+.pan{margin-top:14px;overflow-x:auto;overflow-y:hidden;box-shadow:var(--shadow);scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.pan.can{cursor:grab}
+.pan.drag{cursor:grabbing;user-select:none}
+.bp{position:relative;background-color:var(--bp);color:var(--bp-ink);
   background-image:linear-gradient(rgb(255 255 255 / 13%) 1px,transparent 1px),linear-gradient(90deg,rgb(255 255 255 / 13%) 1px,transparent 1px),
   linear-gradient(rgb(255 255 255 / 5%) 1px,transparent 1px),linear-gradient(90deg,rgb(255 255 255 / 5%) 1px,transparent 1px);
   background-size:60px 60px,60px 60px,12px 12px,12px 12px;background-position:-1px -1px;
-  padding:18px;box-shadow:var(--shadow)}
+  padding:18px}
+.bp.w880{min-width:880px}.bp.w1280{min-width:1280px}
 .bp::before{content:"";position:absolute;inset:8px;border:1px solid rgb(255 255 255 / 55%);pointer-events:none}
-.bp .draw{position:relative;overflow:auto;padding:10px 6px 4px}
+.bp .draw{position:relative;padding:10px 6px 4px}
 .bp svg{display:block;width:100%;height:auto}
-.bp .wide svg{min-width:880px}
-.bp .topo svg{min-width:1240px}
 .bp .tb{display:flex;justify-content:flex-end;margin-top:6px}
 .bp .tb table{border-collapse:collapse;font:500 10.5px/1.2 var(--mono);color:var(--bp-ink);letter-spacing:.06em;text-transform:uppercase}
 .bp .tb td{border:1px solid rgb(255 255 255 / 60%);padding:5px 9px;background:color-mix(in srgb,var(--bp) 92%,black)}
 .bp .tb td.k{color:var(--bp-dim);font-size:9.5px}
-.bp .hint{font:500 11px var(--mono);color:var(--bp-dim);margin-top:4px}
-.bp .mhint{display:none}
-@media (max-width:900px){.bp .mhint{display:block}}
 
 /* ---------- key figures schedule ---------- */
 .figs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));margin-top:16px;border:1px solid var(--line-strong);background:var(--surface);box-shadow:var(--shadow)}
@@ -232,15 +231,14 @@ footer b{color:var(--muted);font-weight:500}
 <section class="sheet" id="s-overview">
   <div class="head"><div class="code">N-00</div>
     <div class="ttl"><h1>Campus network, Faculty of Education EB1 and EB2</h1>
-    <p>Two three-storey buildings, 722 peak users and 1,668 devices. A three-tier design with a core in each building and one firewall HA pair as the only Layer 3 point, from a site survey through to a sourced bill of materials.</p></div>
-    <dl><dt>Status</dt><dd>Design proposal</dd><dt>Source</dt><dd>network.yaml</dd><dt>Build</dt><dd id="bdate"></dd></dl></div>
+    <p>Two three-storey buildings, 722 peak users and 1,668 devices. A three-tier design with a core in each building and one firewall HA pair as the only Layer 3 point.</p></div>
+    <dl><dt>Status</dt><dd>Design proposal</dd><dt>Budget</dt><dd id="hbud"></dd><dt>Build</dt><dd id="bdate"></dd></dl></div>
 
   <div class="figs" id="figs"></div>
 
-  <div class="sub"><span class="n">A</span><h2>Riser diagram</h2><span>Section through both buildings · not to scale</span></div>
-  <p class="note">Where the equipment sits and how the floors are cabled. Each building has its own core; the two cores are joined by single-mode fibre on two separate paths.</p>
-  <figure class="bp"><div class="draw wide" id="riser"></div><div class="hint mhint">Scroll sideways for the full section.</div>
-    <div class="tb"><table><tr><td class="k">Sheet</td><td>N-00/A</td><td class="k">Title</td><td>Riser diagram</td><td class="k">Scale</td><td>NTS</td></tr></table></div></figure>
+  <div class="sub"><span class="n">A</span><h2>Riser diagram</h2></div>
+  <div class="pan"><figure class="bp w880"><div class="draw" id="riser"></div>
+    <div class="tb"><table><tr><td class="k">Sheet</td><td>N-00/A</td><td class="k">Title</td><td>Riser diagram</td><td class="k">Scale</td><td>NTS</td></tr></table></div></figure></div>
 
   <div class="sub"><span class="n">B</span><h2>Design notes</h2></div>
   <div class="cols">
@@ -265,24 +263,23 @@ footer b{color:var(--muted);font-weight:500}
 <section class="sheet" id="s-topology">
   <div class="head"><div class="code">N-01</div>
     <div class="ttl"><h1>Hierarchical physical topology</h1>
-    <p>Drawn by <code>tools/diagram.py</code> from the link table in the design file. Line pattern gives the medium, so the drawing reads in one colour.</p></div>
-    <dl><dt>Scale</dt><dd>NTS</dd><dt>Links</dt><dd id="nlinks"></dd><dt>Source</dt><dd>network.yaml</dd></dl></div>
-  <figure class="bp"><div class="draw wide topo"><!--__SVG__--></div><div class="hint">Scroll sideways for the full drawing.</div>
-    <div class="tb"><table><tr><td class="k">Sheet</td><td>N-01</td><td class="k">Title</td><td>Physical topology</td><td class="k">Scale</td><td>NTS</td></tr></table></div></figure>
+    <p>ITSC uplinks, firewall HA pair, two building cores, three distribution switches and six access stacks.</p></div>
+    <dl><dt>Scale</dt><dd>NTS</dd><dt>Links</dt><dd id="nlinks"></dd><dt>Tiers</dt><dd>3</dd></dl></div>
+  <div class="pan"><figure class="bp w1280"><div class="draw"><!--__SVG__--></div>
+    <div class="tb"><table><tr><td class="k">Sheet</td><td>N-01</td><td class="k">Title</td><td>Physical topology</td><td class="k">Scale</td><td>NTS</td></tr></table></div></figure></div>
 </section>
 
 <section class="sheet" id="s-addressing">
   <div class="head"><div class="code">N-02</div>
     <div class="ttl"><h1>Addressing plan</h1>
-    <p>10.10.0.0/16 faculty block, one /21 per building, and the whole plan summarises to 10.10.0.0/19. Gateway <code>.1</code> on the firewall pair.</p></div>
+    <p>10.10.0.0/16 faculty block, one /21 per building, summarised as 10.10.0.0/19. Gateway <code>.1</code> on the firewall pair.</p></div>
     <dl><dt>Summary</dt><dd>10.10.0.0/19</dd><dt>VLANs</dt><dd id="nvl"></dd><dt>Gateway</dt><dd>.1 HA VIP</dd></dl></div>
-  <div class="sub"><span class="n">A</span><h2>Address map</h2><span>Drawn to scale · one row per /21</span></div>
-  <figure class="bp"><div class="draw wide" id="amap"></div>
-    <div class="hint">Select a block to find it in the table.</div>
-    <div class="tb"><table><tr><td class="k">Sheet</td><td>N-02/A</td><td class="k">Title</td><td>Address map</td><td class="k">Scale</td><td>1 row = 2,048 addr</td></tr></table></div></figure>
+  <div class="sub"><span class="n">A</span><h2>Address map</h2></div>
+  <div class="pan"><figure class="bp w880"><div class="draw" id="amap"></div>
+    <div class="tb"><table><tr><td class="k">Sheet</td><td>N-02/A</td><td class="k">Title</td><td>Address map</td><td class="k">Scale</td><td>1 row = /21</td></tr></table></div></figure></div>
   <div class="sub"><span class="n">B</span><h2>Address lookup</h2></div>
   <div class="tool"><div class="row"><label class="f">IPv4 address<input id="ipq" placeholder="10.10.13.40" inputmode="decimal" style="width:220px"></label><button class="btn" id="ipgo">Look up</button></div>
-    <div class="out" id="ipout">Enter an address from the plan.</div></div>
+    <div class="out" id="ipout">—</div></div>
   <div class="sub"><span class="n">C</span><h2>VLAN schedule</h2><span id="vcount"></span></div>
   <div class="row" style="margin-top:0"><label class="f">Filter<input id="vf" placeholder="name, id or zone" style="width:260px"></label></div>
   <div class="tw"><table class="t"><thead><tr><th class="n">VLAN</th><th>Name</th><th>Scope</th><th>Zone</th><th>Subnet</th><th>Gateway</th><th class="n">Endpoints</th><th class="n">Need</th><th class="n">Usable</th><th>Headroom</th></tr></thead><tbody id="vt"></tbody></table></div>
@@ -295,7 +292,7 @@ footer b{color:var(--muted);font-weight:500}
     <dl><dt>APs</dt><dd id="naps"></dd><dt>Standard</dt><dd>802.11ax</dd><dt>Controller</dt><dd>C9800-L-F</dd></dl></div>
   <div class="sub"><span class="n">A</span><h2>AP schedule by floor</h2></div>
   <div class="tw"><table class="t"><thead><tr><th>Floor</th><th class="n">Users</th><th class="n">Wi-Fi devices</th><th class="n">APs</th><th class="n">Devices per AP</th></tr></thead><tbody id="ft"></tbody><tfoot id="ftf"></tfoot></table></div>
-  <div class="sub"><span class="n">B</span><h2>AP sizing calculator</h2><span>150 Mbps and 150 clients per AP</span></div>
+  <div class="sub"><span class="n">B</span><h2>AP sizing</h2><span>150 Mbps · 150 clients per AP</span></div>
   <div class="tool"><div class="row">
       <label class="f">Users<input id="wu" type="number" value="90" min="0" style="width:96px"></label>
       <label class="f">Mbps per user<input id="wm" type="number" value="5" min="0" step="0.5" style="width:96px"></label>
@@ -308,9 +305,9 @@ footer b{color:var(--muted);font-weight:500}
 <section class="sheet" id="s-security">
   <div class="head"><div class="code">N-04</div>
     <div class="ttl"><h1>Security zones and policy</h1>
-    <p>A zone is the same VLAN group in both buildings. Anything not allowed is denied, and every policy is logged for 90 days under the Computer Crime Act, section 26.</p></div>
+    <p>Each zone is the same VLAN group in both buildings. Policies are logged for 90 days (Computer Crime Act, s.26).</p></div>
     <dl><dt>Default</dt><dd>Deny</dd><dt>Log</dt><dd>90 days</dd><dt>Edge</dt><dd>FortiGate HA</dd></dl></div>
-  <div class="sub"><span class="n">A</span><h2>Zone matrix</h2><span>Rows are sources</span></div>
+  <div class="sub"><span class="n">A</span><h2>Zone matrix</h2></div>
   <div class="tw mx"><table class="t"><thead><tr><th>From \ to</th><th>Internet</th><th>Servers</th><th>CCTV</th><th>Management</th></tr></thead><tbody>
     <tr><td>Staff</td><td class="y">Allow, with IPS, AV and web filter</td><td class="y">Published services</td><td class="p">Admins to NVR only</td><td class="p">Admins only</td></tr>
     <tr><td>Student</td><td class="y">Allow, with IPS and app control</td><td class="p">Selected services</td><td class="x">Deny</td><td class="x">Deny</td></tr>
@@ -327,7 +324,7 @@ footer b{color:var(--muted);font-weight:500}
 <section class="sheet" id="s-budget">
   <div class="head"><div class="code">N-05</div>
     <div class="ttl"><h1>Equipment and budget</h1>
-    <p>Every line has a price source except fibre installation, which is estimated. Recurring cost after year three: AP and firewall licences.</p></div>
+    <p>All lines priced from supplier sources except fibre installation (estimate). Recurring after year three: AP and firewall licences.</p></div>
     <dl><dt>Total</dt><dd id="btot"></dd><dt>VAT</dt><dd>7%</dd><dt>Lines</dt><dd id="blines"></dd></dl></div>
   <div class="sub"><span class="n">A</span><h2>By category</h2><span>THB, before VAT</span></div>
   <div class="tool bars" id="bcat"></div>
@@ -339,10 +336,10 @@ footer b{color:var(--muted);font-weight:500}
 <section class="sheet" id="s-lab">
   <div class="head"><div class="code">N-06</div>
     <div class="ttl"><h1>Packet Tracer lab</h1>
-    <p>A scaled replica of the design. ISR4331s with HSRP stand in for the FortiGate pair, 3650s for the core and distribution, and 2960s for each access stack. Configs are rendered from the design by <code>tools/render.py</code>, and CI fails if they drift.</p></div>
+    <p>Scaled replica of the design: ISR4331 with HSRP for the FortiGate pair, 3650 for core and distribution, 2960 for each access stack.</p></div>
     <dl><dt>Devices</dt><dd id="ncfg"></dd><dt>Tests</dt><dd id="ntest"></dd><dt>Tool</dt><dd>PT 9.0</dd></dl></div>
-  <div class="sub"><span class="n">A</span><h2>Lab topology</h2><span>lab/NETDES-EB1-EB2.pkt</span></div>
-  <figure class="shot"><img src="pt-topology.png" alt="Packet Tracer topology of the EB1-EB2 lab, laid out in zones for the ISP edge, firewalls, EB2 and EB1" loading="lazy"><figcaption>Packet Tracer workspace, cabled and addressed by lab/scripts/pt-build.js</figcaption></figure>
+  <div class="sub"><span class="n">A</span><h2>Lab topology</h2></div>
+  <figure class="shot"><img src="pt-topology.png" alt="Packet Tracer topology of the EB1-EB2 lab, laid out in zones for the ISP edge, firewalls, EB2 and EB1" loading="lazy"></figure>
   <div class="sub"><span class="n">B</span><h2>Device configs</h2></div>
   <div class="row" style="margin-top:0"><label class="f">Device<select id="cs"></select></label><button class="btn ghost" id="cc" type="button">Copy config</button><span class="tag" id="cl"></span></div>
   <pre class="cfg" id="cv"></pre>
@@ -353,14 +350,14 @@ footer b{color:var(--muted);font-weight:500}
 <section class="sheet" id="s-checks">
   <div class="head"><div class="code">N-07</div>
     <div class="ttl"><h1>Design checks</h1>
-    <p>Output of <code>tools/validate.py</code> at build time: subnet sizing and overlap, ports, PoE, uplink failure, media limits, SFP+ budgets, controller scale and budget arithmetic.</p></div>
+    <p>Subnet sizing and overlap, ports, PoE, uplink failure, media limits, SFP+ budgets, controller scale and budget arithmetic.</p></div>
     <dl><dt>Pass</dt><dd id="kp"></dd><dt>Warn</dt><dd id="kw"></dd><dt>Fail</dt><dd id="kx"></dd></dl></div>
   <div class="row"><label class="f">Section<select id="kf"><option value="">All sections</option></select></label><label class="f">Result<select id="ks"><option value="">All results</option><option>PASS</option><option>WARN</option><option>FAIL</option></select></label></div>
   <div class="checks" id="kl"></div>
 </section>
 
 </main>
-<footer><div class="in"><b>Drawn by Zann</b> from a Group 2 course project, 261434 Computer Network Design and Management, Chiang Mai University. A design proposal, not a deployed network. Source on <a href="https://github.com/Zann208/NETDES-EB1-EB2-Campus-Design">GitHub</a>.</div></footer>
+<footer><div class="in">Group 2 · 261434 Computer Network Design and Management · Chiang Mai University · Design proposal · <a href="https://github.com/Zann208/NETDES-EB1-EB2-Campus-Design">Repository</a></div></footer>
 </div>
 </div>
 
@@ -383,6 +380,7 @@ function go(id){
   const s=FLAT.find(x=>x[0]===id); $('#crumb').textContent=s[1]+' '+s[2]; document.title=`${s[1]} ${s[2]} · EB1-EB2 Campus Network`;
   try{history.replaceState(null,'','#'+id)}catch(e){}
   window.scrollTo(0,0);
+  if(typeof panFit==='function') panFit();
   const tab=document.querySelector('#tabs [data-t="'+id+'"]'); if(tab) tab.scrollIntoView({block:'nearest',inline:'center'});
 }
 document.addEventListener('click',e=>{const b=e.target.closest('[data-t],[data-go]'); if(b) go(b.dataset.t||b.dataset.go)});
@@ -401,11 +399,11 @@ const pre=D.bom.reduce((a,r)=>a+r.qty*r.unit_thb,0), total=Math.round(pre*1.07);
 const pass=D.checks.filter(c=>c.s==='PASS').length, warn=D.checks.filter(c=>c.s==='WARN').length, fail=D.checks.filter(c=>c.s==='FAIL').length;
 $('#pill').innerHTML=`<i>${pass}</i> pass · ${warn} warn · ${fail} fail`;
 $('#bdate').textContent=D.build;
-$('#tblock').innerHTML=[['Project','EB1-EB2 campus network'],['Client','Faculty of Education, CMU'],['Team','Group 2'],['Drawn','Zann'],['Status','Design proposal'],['Build',D.build]]
+$('#tblock').innerHTML=[['Project','EB1-EB2 campus network'],['Client','Faculty of Education, CMU'],['Team','Group 2'],['Status','Design proposal'],['Build',D.build]]
   .map(([k,v])=>`<div><span>${k}</span><span>${esc(v)}</span></div>`).join('');
 $('#figs').innerHTML=[[fmt(users),'Peak users'],[fmt(wifi+wired),'Devices'],[aps,'Wi-Fi 6 APs'],[D.vlans.length,'VLANs'],['THB '+(total/1e6).toFixed(2)+'M','Incl. VAT'],[pass+'/'+D.checks.length,'Checks pass']]
   .map(([b,s])=>`<div><b>${b}</b><span>${s}</span></div>`).join('');
-$('#nlinks').textContent=D.links.length; $('#nvl').textContent=D.vlans.length; $('#naps').textContent=aps;
+$('#nlinks').textContent=D.links.length; $('#hbud').textContent='THB '+(total/1e6).toFixed(2)+'M'; $('#nvl').textContent=D.vlans.length; $('#naps').textContent=aps;
 
 // ---------- SVG helpers (blueprint) ----------
 const INK='#f2f6fb', DIM='#b9cde6';
@@ -514,7 +512,7 @@ function amap(){
   const ty=24, ybot=Y0+rows.length*(RH+GAP)-GAP;
   out.push(L([[X0,ty-6],[X0,ty+6]],{w:1,stroke:DIM}),L([[X0+RW,ty-6],[X0+RW,ty+6]],{w:1,stroke:DIM}),L([[X0,ty],[X0+RW,ty]],{w:1,stroke:DIM}));
   out.push(`<path d="M${X0} ${ty} l9 -3.5 v7 z M${X0+RW} ${ty} l-9 -3.5 v7 z" fill="${DIM}"/>`);
-  out.push(T(X0+RW/2,ty-7,'/21 = 2,048 addresses · 8 × /24 per row · plan summarises to 10.10.0.0/19',{anchor:'middle',size:10.5}));
+  out.push(T(X0+RW/2,ty-7,'/21 · 2,048 addresses per row · 8 × /24',{anchor:'middle',size:10.5}));
   rows.forEach(([cidr,name],r)=>{
     const y=Y0+r*(RH+GAP);
     out.push(T(X0-14,y+15,cidr,{anchor:'end',size:11.5,weight:500}));
@@ -589,9 +587,15 @@ function krows(){const f=$('#kf').value,s=$('#ks').value;
   $('#kl').innerHTML=D.checks.filter(c=>(!f||c.sec===f)&&(!s||c.s===s)).map(c=>`<div class="check"><span><span class="tag ${c.s==='PASS'?'ok':c.s==='WARN'?'warn':'bad'}">${c.s}</span></span><span class="sec">${esc(c.sec)}</span><span>${esc(c.msg)}</span></div>`).join('')||'<div class="check">No matching checks.</div>'}
 $('#kf').onchange=krows;$('#ks').onchange=krows;krows();
 
+document.querySelectorAll('.pan').forEach(p=>{let x0=0,s0=0,on=false;
+  p.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'||e.button!==0||!p.classList.contains('can')||e.target.closest('.blk'))return;on=true;x0=e.clientX;s0=p.scrollLeft;p.classList.add('drag');p.setPointerCapture(e.pointerId)});
+  p.addEventListener('pointermove',e=>{if(on)p.scrollLeft=s0-(e.clientX-x0)});
+  const end=()=>{on=false;p.classList.remove('drag')};p.addEventListener('pointerup',end);p.addEventListener('pointercancel',end);});
+const panFit=()=>document.querySelectorAll('.pan').forEach(p=>p.classList.toggle('can',p.scrollWidth>p.clientWidth+1));
+addEventListener('resize',panFit);
 const fromHash=()=>go((location.hash||'#overview').slice(1).replace(/[^a-z]/g,'')||'overview');
-addEventListener('hashchange',fromHash);
-fromHash();
+addEventListener('hashchange',()=>{fromHash();panFit()});
+fromHash();panFit();
 </script>
 </body>
 </html>
