@@ -2,7 +2,7 @@ name: validate-design
 
 on:
   push:
-    paths: ["design/**", "tools/**", ".github/workflows/validate.yml"]
+    paths: ["design/**", "tools/**", "lab/**", ".github/workflows/validate.yml"]
   pull_request:
 
 jobs:
@@ -13,5 +13,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install pyyaml
+      - run: pip install pyyaml jinja2
       - run: python tools/validate.py
+      - name: Lab configs match the design
+        run: |
+          python tools/render.py
+          git diff --exit-code lab/

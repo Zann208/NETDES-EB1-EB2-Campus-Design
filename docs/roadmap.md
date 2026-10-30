@@ -7,8 +7,8 @@ Every output below draws its numbers from `design/network.yaml`, so they cannot 
 | 1 | Source of truth + validator | YAML design, BOM, 143 automated checks, CI | Done |
 | 2 | Design docs | Report rewritten as short Markdown pages (site, WLAN, logical, access, security, budget, decisions) | Next |
 | 3 | Physical topology | Clean draw.io diagram in Cisco icons, exported to SVG for README and console | Next |
-| 4 | Lab | Scaled emulation of the design (platform to be chosen) with configs and test evidence | Planned |
-| 5 | Config generation | Python + Jinja2 renders switch / firewall configs from the YAML | Planned |
+| 4 | Lab | Packet Tracer replica, generated configs, 28-test plan | Configs done; build in PT and capture evidence next |
+| 5 | Config generation | Python + Jinja2 renders switch / firewall configs from the YAML | Done |
 | 6 | NetDes console | GitHub Pages site in the same style as the wnet and algo consoles | Planned |
 | 7 | LinkedIn post | Project summary with topology image and repo link | After 3 and 4 |
 | 8 | CV / portfolio | 2-3 bullets tied to verifiable artefacts in this repo | After 4 |

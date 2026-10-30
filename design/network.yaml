@@ -72,20 +72,37 @@ addressing:
 
 # endpoints = what connects today; growth = planning margin
 vlans:
-  - {id: 120, name: EB1-STUDENT, scope: EB1,    subnet: 10.10.0.0/22,     endpoints: 485, growth: 0.30, ssid: EB-Student}
-  - {id: 110, name: EB1-STAFF,   scope: EB1,    subnet: 10.10.4.0/24,     endpoints: 124, growth: 0.20, ssid: EB-Staff}
-  - {id: 130, name: EB1-GUEST,   scope: EB1,    subnet: 10.10.5.0/25,     endpoints: 36,  growth: 1.00, ssid: EB-Guest}
-  - {id: 140, name: EB1-IOT,     scope: EB1,    subnet: 10.10.5.128/25,   endpoints: 45,  growth: 0.40, ssid: EB-IoT}
-  - {id: 150, name: EB1-CCTV,    scope: EB1,    subnet: 10.10.6.0/27,     endpoints: 8,   growth: 0.50}
-  - {id: 220, name: EB2-STUDENT, scope: EB2,    subnet: 10.10.8.0/22,     endpoints: 437, growth: 0.30, ssid: EB-Student}
-  - {id: 210, name: EB2-STAFF,   scope: EB2,    subnet: 10.10.12.0/23,    endpoints: 295, growth: 0.20, ssid: EB-Staff}
-  - {id: 230, name: EB2-GUEST,   scope: EB2,    subnet: 10.10.14.0/25,    endpoints: 36,  growth: 1.00, ssid: EB-Guest}
-  - {id: 240, name: EB2-IOT,     scope: EB2,    subnet: 10.10.14.128/25,  endpoints: 76,  growth: 0.40, ssid: EB-IoT}
-  - {id: 250, name: EB2-CCTV,    scope: EB2,    subnet: 10.10.15.0/27,    endpoints: 9,   growth: 0.50}
-  - {id: 10,  name: NET-MGMT,    scope: shared, subnet: 10.10.16.0/26,    endpoints: 22,  growth: 0.50}
-  - {id: 40,  name: SERVER,      scope: shared, subnet: 10.10.16.64/27,   endpoints: 12,  growth: 0.50}
-  - {id: 20,  name: AP-MGMT,     scope: shared, subnet: 10.10.17.0/25,    endpoints: 57,  growth: 0.50}
-  - {id: 30,  name: VOICE,       scope: shared, subnet: 10.10.18.0/24,    endpoints: 93,  growth: 0.40}
+  - {id: 120, name: EB1-STUDENT, scope: EB1,    subnet: 10.10.0.0/22,     endpoints: 485, growth: 0.30, ssid: EB-Student, zone: STUDENT, dhcp: pool}
+  - {id: 110, name: EB1-STAFF,   scope: EB1,    subnet: 10.10.4.0/24,     endpoints: 124, growth: 0.20, ssid: EB-Staff, zone: STAFF, dhcp: pool}
+  - {id: 130, name: EB1-GUEST,   scope: EB1,    subnet: 10.10.5.0/25,     endpoints: 36,  growth: 1.00, ssid: EB-Guest, zone: GUEST, dhcp: pool}
+  - {id: 140, name: EB1-IOT,     scope: EB1,    subnet: 10.10.5.128/25,   endpoints: 45,  growth: 0.40, ssid: EB-IoT, zone: IOT, dhcp: pool}
+  - {id: 150, name: EB1-CCTV,    scope: EB1,    subnet: 10.10.6.0/27,     endpoints: 8,   growth: 0.50, zone: CCTV, dhcp: static}
+  - {id: 220, name: EB2-STUDENT, scope: EB2,    subnet: 10.10.8.0/22,     endpoints: 437, growth: 0.30, ssid: EB-Student, zone: STUDENT, dhcp: pool}
+  - {id: 210, name: EB2-STAFF,   scope: EB2,    subnet: 10.10.12.0/23,    endpoints: 295, growth: 0.20, ssid: EB-Staff, zone: STAFF, dhcp: pool}
+  - {id: 230, name: EB2-GUEST,   scope: EB2,    subnet: 10.10.14.0/25,    endpoints: 36,  growth: 1.00, ssid: EB-Guest, zone: GUEST, dhcp: pool}
+  - {id: 240, name: EB2-IOT,     scope: EB2,    subnet: 10.10.14.128/25,  endpoints: 76,  growth: 0.40, ssid: EB-IoT, zone: IOT, dhcp: pool}
+  - {id: 250, name: EB2-CCTV,    scope: EB2,    subnet: 10.10.15.0/27,    endpoints: 9,   growth: 0.50, zone: CCTV, dhcp: static}
+  - {id: 10,  name: NET-MGMT,    scope: shared, subnet: 10.10.16.0/26,    endpoints: 22,  growth: 0.50, zone: MGMT, dhcp: static}
+  - {id: 40,  name: SERVER,      scope: shared, subnet: 10.10.16.64/27,   endpoints: 12,  growth: 0.50, zone: SERVER, dhcp: static}
+  - {id: 20,  name: AP-MGMT,     scope: shared, subnet: 10.10.17.0/25,    endpoints: 57,  growth: 0.50, zone: MGMT, dhcp: pool}
+  - {id: 30,  name: VOICE,       scope: shared, subnet: 10.10.18.0/24,    endpoints: 93,  growth: 0.40, zone: VOICE, dhcp: pool}
+# Zone policy (report 11.2). Default deny on the FortiGate; the lab renders the
+# rules that matter as inbound ACLs on each source zone's gateway.
+policy:
+  STUDENT: [{deny: CCTV}, {deny: MGMT}, {permit: any}]
+  GUEST:   [{deny: internal}, {permit: any}]
+  IOT:     [{permit_return: STAFF}, {deny: internal}, {permit: any}]
+  CCTV:    [{permit_host: nvr}, {deny: any}]
+
+services:
+  gateway_host: 1          # .1 in every VLAN (FortiGate HA virtual IP)
+  wlc_mgmt: 10.10.16.10    # VLAN 10, handed to APs by DHCP option 43
+  nvr: 10.10.16.70         # VLAN 40
+  transit:                 # VLAN 900, placeholder until ITSC assigns
+    subnet: 172.16.90.0/29
+    itsc: 172.16.90.1
+    fw_vip: 172.16.90.4
+
 special_vlans:
   - {id: 900, name: OUTSIDE,   purpose: transit to University Core (ITSC assigns)}
   - {id: 999, name: BLACKHOLE, purpose: native VLAN and unused ports}

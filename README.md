@@ -36,10 +36,11 @@ This is a design proposal built from a real site survey. It has not been deploye
 design/network.yaml   source of truth: users, VLANs, subnets, devices, links, PoE
 design/bom.csv        equipment list with unit prices and sources
 tools/validate.py     recomputes every figure and cross-checks documents (143 checks)
+tools/render.py       generates Packet Tracer configs, cabling and test plan from the design
 diagrams/             draw.io topology sources
 docs/errata.md        corrections to the submitted report, open items
 docs/roadmap.md       what is built next
-lab/                  emulated topology (in progress)
+lab/                  Packet Tracer replica: generated configs, cabling, 28-test plan
 ```
 
 ## Verify the design
@@ -52,7 +53,14 @@ python tools/validate.py
 Checks subnet sizing and overlaps, switch ports with 20% spare, per-switch PoE budgets,
 uplink capacity after a link failure, media distance limits, SFP+ port budgets,
 controller scale, BOM arithmetic and that device counts agree between the design and the BOM.
-It runs on every push through GitHub Actions.
+It runs on every push through GitHub Actions, which also re-renders the lab configs and fails if
+the committed configs no longer match the design.
+
+## Lab
+
+A scaled Packet Tracer replica (15 network devices, WLC and APs) built from generated configs:
+LACP bundles, Rapid-PVST+ with a fixed root, HSRP gateway redundancy standing in for FortiGate HA,
+split DHCP, zone-policy ACLs, DHCP snooping, BPDU Guard and port security. See [lab/README.md](lab/README.md).
 
 ## Status
 

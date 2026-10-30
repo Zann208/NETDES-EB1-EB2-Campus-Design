@@ -1,0 +1,77 @@
+# Packet Tracer lab: a scaled replica of design/network.yaml.
+# Device names match the design Device IDs. Each switch stack is one PT switch.
+# tools/render.py turns this file + the design into configs and a cabling table.
+
+models:   # PT model -> interfaces available (used to lint the cabling)
+  "2911":       {kind: router, ports: ["Gi0/0", "Gi0/1", "Gi0/2"]}
+  ISR4331:      {kind: router, ports: ["Gi0/0/0", "Gi0/0/1", "Gi0/0/2"]}
+  3650-24PS:    {kind: l3switch, ports: "Gi1/0/1-24,Gi1/1/1-4"}
+  2960-24TT:    {kind: l2switch, ports: "Fa0/1-24,Gi0/1-2"}
+  WLC-3504:     {kind: wlc}
+  LAP-3702i:    {kind: ap}
+
+# Stand-ins and why
+devices:
+  ITSC-R:       {model: "2911",    stands_for: University Core (ITSC) router}
+  ITSC-SW:      {model: 2960-24TT, stands_for: ITSC handover segment (VLAN 900)}
+  EB2-MDF-FW01: {model: ISR4331,   stands_for: FortiGate 200F (active), role: firewall, priority: 110}
+  EB2-MDF-FW02: {model: ISR4331,   stands_for: FortiGate 200F (passive), role: firewall, priority: 100}
+  EB2-MDF-CS:   {model: 3650-24PS, stands_for: C9300-24T stack (faculty core), building: ALL, mgmt: 10.10.16.11, stp_priority: 4096}
+  EB1-F1-CS:    {model: 3650-24PS, stands_for: C9200L-24T-4X stack (EB1 core), building: EB1, mgmt: 10.10.16.12, stp_priority: 8192}
+  EB2-F2-DS01:  {model: 3650-24PS, stands_for: C9200L-24T-4X, building: EB2, mgmt: 10.10.16.13}
+  EB1-F2-DS01:  {model: 3650-24PS, stands_for: C9200L-24T-4X, building: EB1, mgmt: 10.10.16.14}
+  EB1-F3-DS01:  {model: 3650-24PS, stands_for: C9200L-24T-4X, building: EB1, mgmt: 10.10.16.15}
+  EB2-F1-AS:    {model: 2960-24TT, stands_for: C9200L access stack, building: EB2, mgmt: 10.10.16.21}
+  EB2-F2-AS:    {model: 2960-24TT, stands_for: C9200L access stack, building: EB2, mgmt: 10.10.16.22}
+  EB2-F3-AS:    {model: 2960-24TT, stands_for: C9200L access stack, building: EB2, mgmt: 10.10.16.23}
+  EB1-F1-AS:    {model: 2960-24TT, stands_for: C9200L access stack, building: EB1, mgmt: 10.10.16.24}
+  EB1-F2-AS:    {model: 2960-24TT, stands_for: C9200L access stack, building: EB1, mgmt: 10.10.16.25}
+  EB1-F3-AS:    {model: 2960-24TT, stands_for: C9200L access stack, building: EB1, mgmt: 10.10.16.26}
+  EB2-MDF-WLC01: {model: WLC-3504, stands_for: C9800-L-F, vlans: [10, 110, 120, 130, 140, 210, 220, 230, 240]}
+
+# Switch-to-switch and switch-to-firewall links. po = LACP bundle number.
+# design_link names the real link this lab link represents.
+links:
+  - {a: ITSC-R, a_ports: [Gi0/0], b: ITSC-SW, b_ports: [Fa0/1], kind: transit, design_link: "OS2 10G LR handover"}
+  - {a: EB2-MDF-FW01, a_ports: [Gi0/0/0], b: ITSC-SW, b_ports: [Fa0/2], kind: transit, design_link: "OS2 10G LR"}
+  - {a: EB2-MDF-FW02, a_ports: [Gi0/0/0], b: ITSC-SW, b_ports: [Fa0/3], kind: transit, design_link: "OS2 10G LR"}
+  - {a: EB2-MDF-FW01, a_ports: [Gi0/0/2], b: EB2-MDF-FW02, b_ports: [Gi0/0/2], kind: ha, design_link: "Cat6 1G HA heartbeat"}
+  - {a: EB2-MDF-CS, a_ports: [Gi1/0/21], b: EB2-MDF-FW01, b_ports: [Gi0/0/1], kind: fw_trunk, design_link: "OM4 10G SR 802.1Q trunk"}
+  - {a: EB2-MDF-CS, a_ports: [Gi1/0/22], b: EB2-MDF-FW02, b_ports: [Gi0/0/1], kind: fw_trunk, design_link: "OM4 10G SR 802.1Q trunk"}
+  - {a: EB2-MDF-CS, a_ports: [Gi1/0/1, Gi1/0/2], b: EB1-F1-CS, b_ports: [Gi1/0/1, Gi1/0/2], po: 1, kind: trunk, design_link: "OS2 2x10G LR, 2 diverse paths"}
+  - {a: EB2-MDF-CS, a_ports: [Gi1/0/3, Gi1/0/4], b: EB2-F1-AS, b_ports: [Gi0/1, Gi0/2], po: 2, kind: trunk, down: true, design_link: "OM4 2x10G SR"}
+  - {a: EB2-MDF-CS, a_ports: [Gi1/0/5, Gi1/0/6], b: EB2-F2-DS01, b_ports: [Gi1/0/1, Gi1/0/2], po: 3, kind: trunk, design_link: "OM4 2x10G SR (riser)"}
+  - {a: EB2-MDF-CS, a_ports: [Gi1/0/7], b: EB2-MDF-WLC01, b_ports: ["port 1"], kind: wlc_trunk, design_link: "OM4 2x10G SR LACP"}
+  - {a: EB2-F2-DS01, a_ports: [Gi1/0/3], b: EB2-F2-AS, b_ports: [Gi0/1], kind: trunk, down: true, design_link: "OM4 10G SR"}
+  - {a: EB2-F2-DS01, a_ports: [Gi1/0/4], b: EB2-F2-AS, b_ports: [Gi0/2], kind: trunk, down: true, backup: true, design_link: "Cat6 1G backup (STP-blocked)"}
+  - {a: EB2-F2-DS01, a_ports: [Gi1/0/5], b: EB2-F3-AS, b_ports: [Gi0/1], kind: trunk, down: true, design_link: "OM4 10G SR (riser)"}
+  - {a: EB2-F2-DS01, a_ports: [Gi1/0/6], b: EB2-F3-AS, b_ports: [Gi0/2], kind: trunk, down: true, backup: true, design_link: "Cat6 1G backup (STP-blocked)"}
+  - {a: EB1-F1-CS, a_ports: [Gi1/0/3, Gi1/0/4], b: EB1-F1-AS, b_ports: [Gi0/1, Gi0/2], po: 2, kind: trunk, down: true, design_link: "OM4 2x10G SR"}
+  - {a: EB1-F1-CS, a_ports: [Gi1/0/5, Gi1/0/6], b: EB1-F2-DS01, b_ports: [Gi1/0/1, Gi1/0/2], po: 3, kind: trunk, design_link: "OM4 2x10G SR (riser)"}
+  - {a: EB1-F1-CS, a_ports: [Gi1/0/7, Gi1/0/8], b: EB1-F3-DS01, b_ports: [Gi1/0/1, Gi1/0/2], po: 4, kind: trunk, design_link: "OM4 2x10G SR (riser)"}
+  - {a: EB1-F2-DS01, a_ports: [Gi1/0/3, Gi1/0/4], b: EB1-F2-AS, b_ports: [Gi0/1, Gi0/2], po: 2, kind: trunk, down: true, design_link: "OM4 2x10G SR"}
+  - {a: EB1-F3-DS01, a_ports: [Gi1/0/3, Gi1/0/4], b: EB1-F3-AS, b_ports: [Gi0/1, Gi0/2], po: 2, kind: trunk, down: true, design_link: "OM4 2x10G SR"}
+
+# Same edge-port layout on every access switch. role -> VLAN of that building.
+access_ports:
+  Fa0/1: {role: ap,      vlan: AP-MGMT}
+  Fa0/2: {role: staff,   vlan: STAFF}
+  Fa0/3: {role: phone,   vlan: STAFF, voice: VOICE}
+  Fa0/4: {role: printer, vlan: IOT}
+  Fa0/5: {role: cctv,    vlan: CCTV, port_security: true}
+  Fa0/6: {role: student-test, vlan: STUDENT, note: "lab test port; students are Wi-Fi only in the design"}
+  Fa0/7: {role: guest-test,   vlan: GUEST,   note: "lab test port; guests are Wi-Fi only in the design"}
+
+# Core edge ports
+core_ports:
+  Gi1/0/23: {role: admin-pc, vlan: NET-MGMT}
+  Gi1/0/24: {role: nvr,      vlan: SERVER}
+
+# Hosts with static addresses (everything else uses DHCP)
+static_hosts:
+  NVR:          {ip: 10.10.16.70, vlan: SERVER,   where: EB2-MDF-CS Gi1/0/24}
+  ADMIN-PC:     {ip: 10.10.16.30, vlan: NET-MGMT, where: EB2-MDF-CS Gi1/0/23}
+  EB2-F1-CAM01: {ip: 10.10.15.10, vlan: EB2-CCTV, where: EB2-F1-AS Fa0/5}
+  EB2-F1-PRN01: {ip: 10.10.14.138, vlan: EB2-IOT, where: EB2-F1-AS Fa0/4}
+  EB1-F3-CAM01: {ip: 10.10.6.10,  vlan: EB1-CCTV, where: EB1-F3-AS Fa0/5}
+  EB1-F3-PRN01: {ip: 10.10.5.138, vlan: EB1-IOT, where: EB1-F3-AS Fa0/4}
