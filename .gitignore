@@ -1,0 +1,10 @@
+# Course and personal material that must never be published
+private/
+*.pdf
+*.pptx
+*.docx
+*.xlsx
+
+__pycache__/
+.venv/
+.DS_Store

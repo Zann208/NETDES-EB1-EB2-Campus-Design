@@ -1,0 +1,177 @@
+# Source of truth for the EB1-EB2 campus network design.
+# Every document, diagram, config and budget figure in this repo derives from
+# this file. Change a number here, then run: python tools/validate.py
+
+meta:
+  project: EB1-EB2 Campus Network Design
+  site: Faculty of Education, Chiang Mai University (buildings EB1, EB2)
+  course: 261434 Computer Network Design and Management
+  report_date: 2026-10-08
+  status: design proposal (not deployed)
+
+# ---------------------------------------------------------------------------
+# 1. Users and devices (peak concurrent)
+# ---------------------------------------------------------------------------
+users:
+  faculty:  {EB1: 15,  EB2: 35,  wifi_per_person: 2.0}
+  staff:    {EB1: 30,  EB2: 60,  wifi_per_person: 2.0}
+  students: {EB1: 285, EB2: 257, wifi_per_person: 1.7}
+  guests:   {EB1: 20,  EB2: 20,  wifi_per_person: 1.8}
+
+# Per-floor counts (report table 1.1). servers = equipment in the MDF.
+floors:
+  EB1-F1: {users: 72,  wifi: 132, pc: 16, phone: 12, printer_av: 4,  servers: 0,  cctv: 3, aps: 9,  wifi_iot: null}
+  EB1-F2: {users: 122, wifi: 232, pc: 15, phone: 13, printer_av: 7,  servers: 0,  cctv: 3, aps: 11, wifi_iot: null}
+  EB1-F3: {users: 156, wifi: 275, pc: 3,  phone: 1,  printer_av: 2,  servers: 0,  cctv: 2, aps: 9,  wifi_iot: null}
+  EB2-F1: {users: 92,  wifi: 180, pc: 30, phone: 21, printer_av: 7,  servers: 12, cctv: 4, aps: 10, wifi_iot: null}
+  EB2-F2: {users: 128, wifi: 246, pc: 41, phone: 21, printer_av: 9,  servers: 0,  cctv: 3, aps: 9,  wifi_iot: null}
+  EB2-F3: {users: 152, wifi: 305, pc: 34, phone: 25, printer_av: 8,  servers: 0,  cctv: 2, aps: 9,  wifi_iot: null}
+
+wireless_iot: {EB1: 32, EB2: 52}
+
+# ---------------------------------------------------------------------------
+# 2. Traffic demand (report section 2.3)
+# ---------------------------------------------------------------------------
+demand:
+  areas:
+    lecture_rooms:    {users: 154, mbps_per_user: 5}
+    conference_rooms: {users: 160, mbps_per_user: 3}
+    club_room:        {users: 30,  mbps_per_user: 2}
+    offices:          {users: 378, mbps_per_user: 4}
+  egress_fraction: 0.40          # share of access traffic leaving the faculty
+  egress_headroom: 2.0           # planning multiplier on egress
+  floor_peak_gbps: {EB1-F1: 0.2, EB1-F2: 0.4, EB1-F3: 0.8, EB2-F1: 0.4, EB2-F2: 0.5, EB2-F3: 0.5}
+  eb1_total_gbps: 1.4
+
+wlan_criteria:
+  rssi_dbm: {dense_voice: -65, office: -67, corridor: -70}
+  snr_db:   {dense_voice: 25,  office: 25,  corridor: 20}
+  ap_planning_mbps: 150
+  max_assoc_per_radio: 150
+  channel_width_mhz: 20
+  min_data_rate_mbps: 12
+  heatmap_tool: Ruijie Cloud AI Heatmap
+  heatmap_green_dbm: -60
+  heatmap_coverage_pct: {EB1: 98, EB2: 90}
+
+# AP sizing for the rooms that drive the count (report table 7.3)
+ap_sizing:
+  EB1302: {users: 90, devices: 155, mbps_per_user: 5, installed: 3}
+  EB1301: {users: 64, devices: 111, mbps_per_user: 5, installed: 3}
+  EB1207: {users: 80, devices: 148, mbps_per_user: 3, installed: 2}
+  EB2321: {users: 80, devices: 148, mbps_per_user: 3, installed: 2}
+  EB2207: {users: 40, devices: 73,  mbps_per_user: 4, installed: 2}
+
+# ---------------------------------------------------------------------------
+# 3. VLANs and IP plan (report section 6)
+# ---------------------------------------------------------------------------
+addressing:
+  faculty_block: 10.10.0.0/16
+  advertised_summary: 10.10.0.0/19
+  building_summary: {EB1: 10.10.0.0/21, EB2: 10.10.8.0/21}
+
+# endpoints = what connects today; growth = planning margin
+vlans:
+  - {id: 120, name: EB1-STUDENT, scope: EB1,    subnet: 10.10.0.0/22,     endpoints: 485, growth: 0.30, ssid: EB-Student}
+  - {id: 110, name: EB1-STAFF,   scope: EB1,    subnet: 10.10.4.0/24,     endpoints: 124, growth: 0.20, ssid: EB-Staff}
+  - {id: 130, name: EB1-GUEST,   scope: EB1,    subnet: 10.10.5.0/25,     endpoints: 36,  growth: 1.00, ssid: EB-Guest}
+  - {id: 140, name: EB1-IOT,     scope: EB1,    subnet: 10.10.5.128/25,   endpoints: 45,  growth: 0.40, ssid: EB-IoT}
+  - {id: 150, name: EB1-CCTV,    scope: EB1,    subnet: 10.10.6.0/27,     endpoints: 8,   growth: 0.50}
+  - {id: 220, name: EB2-STUDENT, scope: EB2,    subnet: 10.10.8.0/22,     endpoints: 437, growth: 0.30, ssid: EB-Student}
+  - {id: 210, name: EB2-STAFF,   scope: EB2,    subnet: 10.10.12.0/23,    endpoints: 295, growth: 0.20, ssid: EB-Staff}
+  - {id: 230, name: EB2-GUEST,   scope: EB2,    subnet: 10.10.14.0/25,    endpoints: 36,  growth: 1.00, ssid: EB-Guest}
+  - {id: 240, name: EB2-IOT,     scope: EB2,    subnet: 10.10.14.128/25,  endpoints: 76,  growth: 0.40, ssid: EB-IoT}
+  - {id: 250, name: EB2-CCTV,    scope: EB2,    subnet: 10.10.15.0/27,    endpoints: 9,   growth: 0.50}
+  - {id: 10,  name: NET-MGMT,    scope: shared, subnet: 10.10.16.0/26,    endpoints: 22,  growth: 0.50}
+  - {id: 40,  name: SERVER,      scope: shared, subnet: 10.10.16.64/27,   endpoints: 12,  growth: 0.50}
+  - {id: 20,  name: AP-MGMT,     scope: shared, subnet: 10.10.17.0/25,    endpoints: 57,  growth: 0.50}
+  - {id: 30,  name: VOICE,       scope: shared, subnet: 10.10.18.0/24,    endpoints: 93,  growth: 0.40}
+special_vlans:
+  - {id: 900, name: OUTSIDE,   purpose: transit to University Core (ITSC assigns)}
+  - {id: 999, name: BLACKHOLE, purpose: native VLAN and unused ports}
+
+ssids:
+  EB-Staff:   {security: WPA3-Enterprise 802.1X + PMF, vlans: [110, 210]}
+  EB-Student: {security: WPA3-Enterprise 802.1X,       vlans: [120, 220]}
+  EB-Guest:   {security: OWE + captive portal,          vlans: [130, 230]}
+  EB-IoT:     {security: WPA2/WPA3-Personal iPSK, hidden, vlans: [140, 240]}
+
+# ---------------------------------------------------------------------------
+# 4. Devices
+# ---------------------------------------------------------------------------
+models:
+  C9200L-48P-4X: {ports: 48, poe_w: 740, sfp_plus: 4, poe: true}
+  C9200L-24P-4G: {ports: 24, poe_w: 370, sfp_plus: 0, poe: true}
+  C9200L-48T-4G: {ports: 48, poe_w: 0,   sfp_plus: 0, poe: false}
+  C9200L-24T-4G: {ports: 24, poe_w: 0,   sfp_plus: 0, poe: false}
+  C9200L-24T-4X: {ports: 24, poe_w: 0,   sfp_plus: 4, poe: false}
+  C9300-24T-E:   {ports: 24, poe_w: 0,   sfp_plus: 8, poe: false}   # with C9300-NM-8X
+  C9800-L-F:     {max_aps: 250, max_clients: 5000, throughput_gbps: 5}
+  FortiGate-200F: {threat_protection_gbps: 3, sessions: 3000000}
+
+poe_draw_w: {ap: 30.0, phone: 15.4, cctv: 15.4}
+
+core:
+  EB2-MDF-CS: {members: [C9300-24T-E, C9300-24T-E], role: faculty core, stp: root}
+  EB1-F1-CS:  {members: [C9200L-24T-4X, C9200L-24T-4X], role: EB1 building core, stp: secondary}
+
+distribution:
+  EB1-F2-DS01: {model: C9200L-24T-4X, serves: [EB1-F2]}
+  EB1-F3-DS01: {model: C9200L-24T-4X, serves: [EB1-F3]}
+  EB2-F2-DS01: {model: C9200L-24T-4X, serves: [EB2-F2, EB2-F3]}
+
+# Access stacks: one per IDF. poe_load lists what each PoE switch powers.
+idfs:
+  EB1-F1:
+    uplink_to: EB1-F1-CS
+    stack: [C9200L-48P-4X, C9200L-24P-4G]
+    poe_load: {AS01: {phone: 12, cctv: 3}, AS02: {ap: 9}}
+  EB1-F2:
+    uplink_to: EB1-F2-DS01
+    stack: [C9200L-48P-4X, C9200L-24P-4G]
+    poe_load: {AS01: {phone: 13, cctv: 3, ap: 2}, AS02: {ap: 9}}
+  EB1-F3:
+    uplink_to: EB1-F3-DS01
+    stack: [C9200L-48P-4X]
+    poe_load: {AS01: {phone: 1, cctv: 2, ap: 9}}
+  EB2-F1:
+    uplink_to: EB2-MDF-CS
+    stack: [C9200L-48P-4X, C9200L-24P-4G, C9200L-24T-4G]
+    poe_load: {AS01: {phone: 21, cctv: 4, ap: 1}, AS02: {ap: 9}}
+  EB2-F2:
+    uplink_to: EB2-F2-DS01
+    stack: [C9200L-48P-4X, C9200L-24P-4G, C9200L-48T-4G]
+    poe_load: {AS01: {phone: 21, cctv: 3}, AS02: {ap: 9}}
+  EB2-F3:
+    uplink_to: EB2-F2-DS01
+    stack: [C9200L-48P-4X, C9200L-24P-4G, C9200L-24T-4G]
+    poe_load: {AS01: {phone: 25, cctv: 2}, AS02: {ap: 9}}
+
+spare_port_target: 0.20
+
+edge:
+  firewalls: {EB2-MDF-FW01: active, EB2-MDF-FW02: passive}
+  wlc: EB2-MDF-WLC01
+
+# ---------------------------------------------------------------------------
+# 5. Links (Gbps). backup_gbps = STP-blocked standby link.
+# ---------------------------------------------------------------------------
+links:
+  - {a: ITSC,        b: EB2-MDF-FW01, media: OS2, optic: 10GBASE-LR, gbps: 10}
+  - {a: ITSC,        b: EB2-MDF-FW02, media: OS2, optic: 10GBASE-LR, gbps: 10}
+  - {a: EB2-MDF-FW01, b: EB2-MDF-CS,  media: OM4, optic: 10GBASE-SR, gbps: 10, trunk: true}
+  - {a: EB2-MDF-FW02, b: EB2-MDF-CS,  media: OM4, optic: 10GBASE-SR, gbps: 10, trunk: true}
+  - {a: EB2-MDF-CS,  b: EB2-MDF-WLC01, media: OM4, optic: 10GBASE-SR, gbps: 20, lacp: true}
+  - {a: EB2-MDF-CS,  b: EB1-F1-CS,    media: OS2, optic: 10GBASE-LR, gbps: 20, lacp: true, diverse_paths: 2, distance_m: 300, distance_confirmed: false}
+  - {a: EB2-MDF-CS,  b: EB2-F1,       media: OM4, optic: 10GBASE-SR, gbps: 20, lacp: true, distance_m: 35}
+  - {a: EB2-MDF-CS,  b: EB2-F2-DS01,  media: OM4, optic: 10GBASE-SR, gbps: 20, lacp: true, distance_m: 45}
+  - {a: EB2-F2-DS01, b: EB2-F2,       media: OM4, optic: 10GBASE-SR, gbps: 10, backup_gbps: 1, distance_m: 2}
+  - {a: EB2-F2-DS01, b: EB2-F3,       media: OM4, optic: 10GBASE-SR, gbps: 10, backup_gbps: 1, distance_m: 5}
+  - {a: EB1-F1-CS,   b: EB1-F1,       media: OM4, optic: 10GBASE-SR, gbps: 20, lacp: true, distance_m: 2}
+  - {a: EB1-F1-CS,   b: EB1-F2-DS01,  media: OM4, optic: 10GBASE-SR, gbps: 20, lacp: true, distance_m: 5}
+  - {a: EB1-F1-CS,   b: EB1-F3-DS01,  media: OM4, optic: 10GBASE-SR, gbps: 20, lacp: true, distance_m: 10}
+  - {a: EB1-F2-DS01, b: EB1-F2,       media: OM4, optic: 10GBASE-SR, gbps: 20, lacp: true, distance_m: 2}
+  - {a: EB1-F3-DS01, b: EB1-F3,       media: OM4, optic: 10GBASE-SR, gbps: 20, lacp: true, distance_m: 2}
+
+media_limits_m: {"10GBASE-SR/OM4": 400, "10GBASE-LR/OS2": 10000, "1000BASE-T/Cat6": 100}
+longest_copper_run_m: 56

@@ -1,0 +1,37 @@
+category,item,spec,qty,unit_thb,source
+Core,C9300-24T-E,"24x1G, Network Essentials, StackWise-480 (EB2-MDF-CS01/02)",2,88100,SUDPIPHOB
+Core,C9300-NM-8X,8x10G SFP+ network module per core switch,2,54285,Network Devices Inc. USD 1645
+Core,STACK-T1-50CM,StackWise-480 cable 0.5 m,2,2409,Network Devices Inc. USD 73
+Core,PWR-C1-350WAC-P,Redundant PSU,2,9537,Network Devices Inc. USD 289
+Core,C9200L-24T-4X-E,24x1G + 4x10G SFP+ (EB1-F1-CS01/02 stack),2,57150,SUDPIPHOB
+Security,FG-200F-BDL-950-36,"FortiGate 200F + FortiCare Premium + FortiGuard UTP 3 yr",2,388500,SUDPIPHOB
+Security,FN-TRAN-SFP+SR,10GBASE-SR (firewall inside),2,2472,datacenter360 CAD 103.01
+Security,FN-TRAN-SFP+LR,10GBASE-LR (firewall outside),2,3960,Ingram USD 120
+Wireless,C9800-L-F-K9,"WLC, 4x10G SFP+, 250 APs / 5,000 clients",1,140085,Network Devices Inc. USD 4245
+Wireless,C9115AXI-S,"Wi-Fi 6 4x4, internal antennas, 802.3at",57,18150,SUDPIPHOB
+Wireless,AIR-DNA-E-3Y,DNA Essentials 3 yr per AP,57,8237,Sync GBP 187.20
+Distribution,C9200L-24T-4X-E,"24x1G + 4x10G SFP+ (EB1-F2-DS01, EB1-F3-DS01)",2,57150,SUDPIPHOB
+Distribution,C9200L-24T-4X-E,24x1G + 4x10G SFP+ (EB2-F2-DS01),1,57150,SUDPIPHOB
+Access,C9200L-48P-4X-E,48xPoE+ 740 W + 4x10G SFP+ (AS01),6,129800,SUDPIPHOB
+Access,C9200L-24P-4G-E,24xPoE+ 370 W (AS02),5,45250,SUDPIPHOB
+Access,C9200L-48T-4G-E,48x1G data (EB2-F2-AS03),1,54150,SUDPIPHOB
+Access,C9200L-24T-4G-E,24x1G data (EB2-F1/F3-AS03),2,31400,SUDPIPHOB
+Access,C9200L-STACK-KIT,StackWise-80 kit per stacked member,15,26895,Network Devices Inc. USD 815
+Optics,SFP-10G-SR-S,10GBASE-SR OM4,38,10394,Network Devices Inc. USD 314.98
+Optics,SFP-10G-LR-S,"10GBASE-LR OS2, inter-building",4,26159,Network Devices Inc. USD 792.70
+Power,SRT3000XLI,Smart-UPS 3000VA/2700W (MDF),1,65682,Quickserv
+Power,SRT1500XLI,Smart-UPS 1500VA/1500W (one per IDF),6,48900,Quickserv
+Cabling,Germany Rack G4N-61042,42U 60x100 rack (MDF),1,28070,Personetshop
+Cabling,Germany Rack G3N-60627,27U 60x60 rack (IDF),6,16218,Personetshop
+Cabling,LINK US-3148A,Cat6 patch panel 48-port 2U,13,5600,Interlink
+Cabling,LINK US-9106LSZH,Cat6 U/UTP LSZH 305 m box,40,6450,Interlink
+Cabling,LINK US-1006A,Cat6 RJ45 jack,343,110,Interlink
+Cabling,LINK US-5102LZ-1,Cat6 LSZH patch cord 2 m,121,700,Interlink
+Cabling,LINK UFC9312A,"OS2 12-core armoured fibre, per m (2 paths)",600,31,Interlink
+Cabling,LINK UFC3312,"OM4 12-core fibre, per m",150,99,Sysinfo
+Cabling,LINK UF-2012A + UF-2222SM,ODF 1U 24F + 2 LC plates,8,3377,Interlink
+Cabling,LINK UFP322D21-03,LC-LC OM4 patch cord 3 m,40,273,Interlink
+Cabling,PA-6608,PDU 8-outlet surge protected,7,1261,Rackth
+Cabling,CA-6602,Cable management panel,20,280,Rackth
+Cabling,UTP installation,"Install, terminate, test per point",343,2500,SEC Thailand reference (2016; confirm)
+Cabling,Fibre installation,"Pull, splice, OTDR test (lump sum)",1,30000,Estimate
