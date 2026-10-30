@@ -8,6 +8,11 @@ budget of THB 7.45 M.
 Course project, 261434 Computer Network Design and Management (CMU, 1/2026).
 This is a design proposal built from a real site survey. It has not been deployed.
 
+**Console:** [zann208.github.io/NETDES-EB1-EB2-Campus-Design](https://zann208.github.io/NETDES-EB1-EB2-Campus-Design/)
+(topology, IP lookup, AP sizing calculator, generated configs, live check results)
+
+![Hierarchical physical topology](diagrams/topology.png)
+
 ## Design at a glance
 
 | Area | Decision |
@@ -37,10 +42,14 @@ design/network.yaml   source of truth: users, VLANs, subnets, devices, links, Po
 design/bom.csv        equipment list with unit prices and sources
 tools/validate.py     recomputes every figure and cross-checks documents (143 checks)
 tools/render.py       generates Packet Tracer configs, cabling and test plan from the design
-diagrams/             draw.io topology sources
+tools/diagram.py      draws the physical topology (Graphviz) from the design
+tools/site.py         builds the NetDes console (site/) for GitHub Pages
+diagrams/             generated topology (SVG/PNG) and the draw.io logical topology
+docs/design.md        the design, condensed from the report
 docs/errata.md        corrections to the submitted report, open items
+docs/portfolio.md     CV and LinkedIn text
 docs/roadmap.md       what is built next
-lab/                  Packet Tracer replica: generated configs, cabling, 28-test plan
+lab/                  Packet Tracer replica: generated configs, build script, cabling, 28-test plan
 ```
 
 ## Verify the design

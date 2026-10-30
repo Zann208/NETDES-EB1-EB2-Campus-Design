@@ -5,13 +5,13 @@ Every output below draws its numbers from `design/network.yaml`, so they cannot 
 | # | Output | What it is | Status |
 |---|--------|------------|--------|
 | 1 | Source of truth + validator | YAML design, BOM, 143 automated checks, CI | Done |
-| 2 | Design docs | Report rewritten as short Markdown pages (site, WLAN, logical, access, security, budget, decisions) | Next |
-| 3 | Physical topology | Clean draw.io diagram in Cisco icons, exported to SVG for README and console | Next |
-| 4 | Lab | Packet Tracer replica, generated configs, 28-test plan | Configs done; build in PT and capture evidence next |
+| 2 | Design docs | docs/design.md, condensed from the report | Done |
+| 3 | Physical topology | Generated from the design by tools/diagram.py (SVG + PNG) | Done |
+| 4 | Lab | Packet Tracer replica: configured, cabled and addressed by script | Test evidence next |
 | 5 | Config generation | Python + Jinja2 renders switch / firewall configs from the YAML | Done |
-| 6 | NetDes console | GitHub Pages site in the same style as the wnet and algo consoles | Planned |
-| 7 | LinkedIn post | Project summary with topology image and repo link | After 3 and 4 |
-| 8 | CV / portfolio | 2-3 bullets tied to verifiable artefacts in this repo | After 4 |
+| 6 | NetDes console | GitHub Pages site built from the design by tools/site.py | Done |
+| 7 | LinkedIn post | docs/portfolio.md | Drafted |
+| 8 | CV / portfolio | docs/portfolio.md | Drafted |
 
 ## Source files: what goes where
 

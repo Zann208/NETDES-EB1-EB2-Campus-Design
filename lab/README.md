@@ -25,6 +25,13 @@ per-building policy tag becomes EB2 VLANs only. The lab proves the logical desig
 (VLANs, trunks, LACP, STP roles, gateway redundancy, DHCP, zone policy, AP join),
 not RF coverage or throughput. Coverage evidence is the Ruijie heatmaps.
 
+## Scripted build
+
+`lab/scripts/pt-build.js` cabled, addressed and renamed the lab through Packet Tracer's scripting API
+(Extensions > Scripting > Edit File Script Module; grant IPC and network-info privileges, then Run File).
+Packet Tracer's port-selection menu ignores synthetic clicks, so the script was the reliable path.
+The 2960-24TT stand-ins have no PoE, so the AP takes PoE from core port Gi1/0/20.
+
 ## Build steps
 
 1. **Place devices** from the table above, named exactly as in `cabling.md`.

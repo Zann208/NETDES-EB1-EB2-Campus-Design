@@ -64,6 +64,7 @@ access_ports:
 
 # Core edge ports
 core_ports:
+  Gi1/0/20: {role: ap-poe-lab, vlan: AP-MGMT}   # PT 2960-24TT has no PoE; AP takes PoE from the 3650
   Gi1/0/23: {role: admin-pc, vlan: NET-MGMT}
   Gi1/0/24: {role: nvr,      vlan: SERVER}
 

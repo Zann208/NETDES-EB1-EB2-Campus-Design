@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NetDes Console</title>
+<meta name="description" content="EB1-EB2 campus network design: topology, addressing, wireless, security, budget, Packet Tracer lab and automated design checks.">
+<style>
+:root{
+  --bg:#0a1020;--panel:#101a2e;--panel2:#15213a;--line:#22314f;--line2:#2c3e62;
+  --ink:#e6edf7;--dim:#a9b6cc;--faint:#7486a3;
+  --cy:#22d3ee;--gr:#4ade80;--am:#fbbf24;--rd:#f87171;--vi:#a78bfa;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15.5px;line-height:1.6;
+  background-image:radial-gradient(circle at 50% -10%,rgba(34,211,238,.07),transparent 55%),
+  linear-gradient(rgba(34,211,238,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(34,211,238,.025) 1px,transparent 1px);
+  background-size:auto,44px 44px,44px 44px;background-attachment:fixed}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+a{color:var(--cy);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:var(--mono);font-size:.88em;background:var(--panel2);color:var(--cy);padding:1px 6px;border-radius:4px;border:1px solid var(--line)}
+header{border-bottom:1px solid var(--line);background:rgba(10,16,32,.85);backdrop-filter:blur(8px);position:sticky;top:0;z-index:5}
+.top{display:flex;align-items:center;gap:12px;padding:12px 0}
+.logo{font-family:var(--mono);font-weight:700;letter-spacing:1px;color:var(--cy);white-space:nowrap}
+.logo span{color:var(--faint);font-weight:500}
+.top .right{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--faint);white-space:nowrap}
+nav{display:flex;gap:4px;overflow-x:auto;padding-bottom:10px;scrollbar-width:thin}
+nav button{flex:0 0 auto;font:600 13px var(--sans);color:var(--dim);background:transparent;border:1px solid transparent;border-radius:8px;padding:7px 12px;cursor:pointer}
+nav button:hover{color:var(--ink);background:var(--panel)}
+nav button.on{color:var(--bg);background:var(--cy)}
+section.tab{display:none;padding:28px 0 80px}section.tab.on{display:block}
+h1{font-size:clamp(24px,4vw,34px);line-height:1.15;letter-spacing:-.6px;font-weight:800}
+h1 .pre,h2 .pre{font-family:var(--mono);color:var(--gr);font-size:12px;display:block;letter-spacing:2px;margin-bottom:8px;font-weight:600}
+h2{font-size:19px;font-weight:700;letter-spacing:-.2px}
+h4{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1.3px;color:var(--faint);margin:18px 0 8px;font-weight:600}
+.lede{color:var(--dim);margin-top:10px;max-width:720px}
+p{margin-top:9px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-top:16px;position:relative}
+.panel::before{content:"";position:absolute;top:-1px;left:18px;width:38px;height:2px;background:var(--cy);border-radius:2px}
+.panel.pg::before{background:var(--gr)}.panel.pa::before{background:var(--am)}.panel.pv::before{background:var(--vi)}
+.badge{font-family:var(--mono);font-size:10.5px;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:4px;border:1px solid var(--line2);color:var(--faint);font-weight:600;white-space:nowrap}
+.badge.gr{color:var(--gr);border-color:var(--gr)}.badge.am{color:var(--am);border-color:var(--am)}.badge.rd{color:var(--rd);border-color:var(--rd)}.badge.cy{color:var(--cy);border-color:var(--cy)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:9px;margin-top:20px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.stat b{display:block;font-family:var(--mono);font-size:21px;color:var(--cy);line-height:1.2}
+.stat span{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--faint)}
+.stat.g b{color:var(--gr)}.stat.a b{color:var(--am)}.stat.v b{color:var(--vi)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.tw{overflow-x:auto;margin-top:12px;border:1px solid var(--line);border-radius:10px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:1px;color:var(--faint);text-align:left;font-weight:600;background:var(--panel2)}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.n,th.n{text-align:right;font-family:var(--mono)}
+td.m{font-family:var(--mono);font-size:12.5px}
+input,select{font:14px var(--sans);color:var(--ink);background:var(--panel2);border:1px solid var(--line2);border-radius:8px;padding:8px 10px;min-width:0}
+input:focus,select:focus{outline:2px solid var(--cy);outline-offset:1px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.out{font-family:var(--mono);font-size:13.5px;margin-top:12px;padding:12px 14px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;white-space:pre-wrap}
+pre.cfg{font-family:var(--mono);font-size:12.5px;line-height:1.5;background:#070c18;border:1px solid var(--line);border-radius:10px;padding:14px;max-height:560px;overflow:auto;margin-top:12px;color:#cfe3f5}
+pre.cfg .c{color:var(--faint)}pre.cfg .k{color:var(--cy)}
+.btn{font:600 13px var(--sans);color:var(--bg);background:var(--cy);border:0;border-radius:8px;padding:8px 14px;cursor:pointer}
+.btn.ghost{color:var(--cy);background:transparent;border:1px solid var(--cy)}
+.topo{background:#fff;border-radius:10px;margin-top:14px;overflow:auto;padding:10px}
+.topo svg{display:block;width:100%;height:auto;min-width:760px}
+.bar{height:8px;background:var(--panel2);border-radius:4px;overflow:hidden;margin-top:4px}
+.bar i{display:block;height:100%;background:var(--cy)}
+ul.list{margin:8px 0 0 18px;color:var(--dim)}ul.list li{margin-top:4px}
+.mx td{font-size:12.5px}.mx .y{color:var(--gr)}.mx .x{color:var(--rd)}.mx .p{color:var(--am)}
+.check{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.check:last-child{border-bottom:0}.check .sec{font-family:var(--mono);color:var(--faint);min-width:64px;font-size:12px;padding-top:2px}
+footer{border-top:1px solid var(--line);padding:22px 0 40px;color:var(--faint);font-size:13px}
+footer .sig{font-family:var(--mono);color:var(--dim)}
+@media(max-width:640px){.top .right{display:none}.panel{padding:14px}th,td{padding:7px 8px}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="top"><div class="logo">NETDES<span> // EB1-EB2 campus</span></div><div class="right" id="hdrStat"></div></div>
+  <nav id="nav"></nav>
+</div></header>
+
+<main class="wrap">
+<section class="tab" id="t-overview">
+  <h1><span class="pre">CAMPUS NETWORK DESIGN</span>Faculty of Education, buildings EB1 and EB2</h1>
+  <p class="lede">A full design from a real site survey: 722 peak users and 1,668 devices across two three-storey buildings,
+  57 controller-based Wi-Fi 6 APs, one firewall HA pair as the only Layer 3 point, and a sourced budget.
+  Every number on this page is generated from the repository's design file and checked automatically.</p>
+  <div class="stats" id="stats"></div>
+  <div class="grid2">
+    <div class="panel"><h2>Architecture</h2>
+      <ul class="list">
+        <li>3-tier with a core in each building; EB1 needs 2 inter-building links instead of 6.</li>
+        <li>FortiGate 200F HA pair is the gateway for all 14 VLANs; every switch is Layer 2.</li>
+        <li>2x10G LACP uplinks; OM4 inside buildings, OS2 on two diverse paths between them.</li>
+        <li>Rapid-PVST+ with the faculty core as root; Root Guard toward access.</li>
+      </ul></div>
+    <div class="panel pg"><h2>Why it holds up</h2>
+      <ul class="list">
+        <li>AP count = max(coverage, capacity): EB1302 needs 450 Mbps, so 3 APs.</li>
+        <li>Highest PoE load 73% of budget; 161 spare access ports.</li>
+        <li>One surviving uplink still carries the busiest floor (0.8 Gbps).</li>
+        <li>Firewall 3 Gbps vs 2.26 Gbps planned egress.</li>
+      </ul></div>
+    <div class="panel pa"><h2>Trade-offs accepted</h2>
+      <ul class="list">
+        <li>EB2-F2-DS01 serves two floors (a second member costs about THB 111,000).</li>
+        <li>Single WLC (HA SSO adds about THB 140,000).</li>
+        <li>Two firewalls, not one (+THB 388,500) to remove the single exit point.</li>
+      </ul></div>
+    <div class="panel pv"><h2>Repository</h2>
+      <p class="lede" style="margin-top:6px">Design as code: a YAML source of truth, a validator, a config generator and a Packet Tracer lab.</p>
+      <div class="row"><a class="btn" href="https://github.com/Zann208/NETDES-EB1-EB2-Campus-Design">View on GitHub</a>
+      <button class="btn ghost" data-go="checks">See the checks</button></div></div>
+  </div>
+</section>
+
+<section class="tab" id="t-topology">
+  <h1><span class="pre">PHYSICAL TOPOLOGY</span>Hierarchical view</h1>
+  <p class="lede">Generated by <code>tools/diagram.py</code> from the link table in the design file. Line style encodes the medium.</p>
+  <div class="topo"><!--__SVG__--></div>
+</section>
+
+<section class="tab" id="t-addressing">
+  <h1><span class="pre">VLAN AND IP PLAN</span>14 VLANs in one /19</h1>
+  <p class="lede">10.10.0.0/16 faculty block, one /21 per building, the whole plan summarises to 10.10.0.0/19. Gateway <code>.1</code> on the firewall pair.</p>
+  <div class="panel"><h2>Which VLAN is this address in?</h2>
+    <div class="row"><input id="ipq" placeholder="e.g. 10.10.13.40" inputmode="decimal" style="width:220px"><button class="btn" id="ipgo">Look up</button></div>
+    <div class="out" id="ipout">Enter an address from the plan.</div></div>
+  <div class="row"><input id="vf" placeholder="Filter VLANs (name, id, zone)" style="flex:1;max-width:340px"></div>
+  <div class="tw"><table><thead><tr><th class="n">VLAN</th><th>Name</th><th>Scope</th><th>Subnet</th><th>Gateway</th><th class="n">Endpoints</th><th class="n">Need</th><th class="n">Usable</th><th>Headroom</th></tr></thead><tbody id="vt"></tbody></table></div>
+</section>
+
+<section class="tab" id="t-wireless">
+  <h1><span class="pre">WIRELESS</span>57 Wi-Fi 6 APs, one controller</h1>
+  <p class="lede">Cisco C9115AXI on a C9800-L-F. RSSI targets: -65 dBm lecture and voice, -67 dBm offices, -70 dBm corridors. 20 MHz channels, 12 Mbps minimum rate.</p>
+  <div class="panel"><h2>AP sizing calculator</h2>
+    <p class="lede" style="margin-top:4px">APs = max(capacity, client count) at 150 Mbps and 150 clients per AP.</p>
+    <div class="row"><label>Users <input id="wu" type="number" value="90" min="0" style="width:90px"></label>
+      <label>Mbps per user <input id="wm" type="number" value="5" min="0" step="0.5" style="width:80px"></label>
+      <label>Devices per user <input id="wd" type="number" value="1.7" min="0" step="0.1" style="width:80px"></label></div>
+    <div class="out" id="wout"></div></div>
+  <div class="tw"><table><thead><tr><th>Floor</th><th class="n">Users</th><th class="n">Wi-Fi devices</th><th class="n">APs</th><th class="n">Devices/AP</th></tr></thead><tbody id="ft"></tbody></table></div>
+  <h4>SSIDs</h4>
+  <div class="tw"><table><thead><tr><th>SSID</th><th>Security</th><th>VLAN EB1 / EB2</th></tr></thead><tbody id="st"></tbody></table></div>
+</section>
+
+<section class="tab" id="t-security">
+  <h1><span class="pre">SECURITY</span>Zones, default deny</h1>
+  <p class="lede">A zone is the same VLAN group in both buildings. Anything not allowed is blocked and every policy is logged for 90 days (Computer Crime Act s.26).</p>
+  <div class="tw mx"><table><thead><tr><th>From \ To</th><th>Internet</th><th>Servers</th><th>CCTV</th><th>Management</th></tr></thead><tbody>
+    <tr><td><b>Staff</b></td><td class="y">Allow + IPS, AV, web filter</td><td class="y">Published services</td><td class="p">Admins to NVR only</td><td class="p">Admins only</td></tr>
+    <tr><td><b>Student</b></td><td class="y">Allow + IPS, app control</td><td class="p">Selected services</td><td class="x">Deny</td><td class="x">Deny</td></tr>
+    <tr><td><b>Guest</b></td><td class="p">Internet only, web filter, rate cap</td><td class="x">Deny</td><td class="x">Deny</td><td class="x">Deny</td></tr>
+    <tr><td><b>IoT</b></td><td class="p">DNS, NTP, vendor cloud</td><td class="p">Required only</td><td class="x">Deny</td><td class="x">Deny</td></tr>
+    <tr><td><b>CCTV</b></td><td class="x">Deny</td><td class="y">NVR only</td><td class="p">Same zone</td><td class="x">Deny</td></tr>
+  </tbody></table></div>
+  <div class="grid2">
+    <div class="panel"><h2>Edge and wireless</h2><ul class="list"><li>FortiGate NGFW HA: firewall, IPS, AV, web filter, app control</li><li>WPA3-Enterprise 802.1X with PMF; OWE + captive portal for guests</li><li>Rogue AP detection on the controller</li></ul></div>
+    <div class="panel pg"><h2>Access and management</h2><ul class="list"><li>DHCP snooping, Dynamic ARP Inspection, BPDU Guard, Root Guard</li><li>Sticky port security on CCTV and IoT ports; unused ports shut in VLAN 999</li><li>SSH v2, HTTPS and SNMPv3 only, through VLAN 10</li></ul></div>
+  </div>
+</section>
+
+<section class="tab" id="t-budget">
+  <h1><span class="pre">EQUIPMENT AND BUDGET</span><span id="bTotal"></span></h1>
+  <p class="lede">Every line has a price source except fibre installation, which is estimated. Recurring cost after year 3: AP and firewall licences.</p>
+  <div class="panel" id="bcat"></div>
+  <div class="tw"><table><thead><tr><th>Category</th><th>Item</th><th>Spec</th><th class="n">Qty</th><th class="n">Unit THB</th><th class="n">Line THB</th></tr></thead><tbody id="bt"></tbody></table></div>
+</section>
+
+<section class="tab" id="t-lab">
+  <h1><span class="pre">PACKET TRACER LAB</span>Generated configs</h1>
+  <p class="lede">A scaled replica of the design: ISR4331s with HSRP stand in for the FortiGate pair, 3650s for the core and distribution, 2960s for each access stack.
+  Configs are rendered from the design by <code>tools/render.py</code>; CI fails if they drift.</p>
+  <div class="row"><select id="cs"></select><button class="btn ghost" id="cc">Copy config</button><span class="badge" id="cl"></span></div>
+  <pre class="cfg" id="cv"></pre>
+  <h4>Test plan</h4>
+  <div class="tw"><table><thead><tr><th>ID</th><th>Test</th><th>Expected</th><th>Status</th></tr></thead><tbody id="tt"></tbody></table></div>
+</section>
+
+<section class="tab" id="t-checks">
+  <h1><span class="pre">DESIGN CHECKS</span><span id="ckTitle"></span></h1>
+  <p class="lede">Output of <code>tools/validate.py</code> at build time: subnet sizing and overlap, ports, PoE, uplink failure, media limits, SFP+ budgets, controller scale and budget arithmetic.</p>
+  <div class="row"><select id="kf"><option value="">All sections</option></select><select id="ks"><option value="">All results</option><option>PASS</option><option>WARN</option><option>FAIL</option></select></div>
+  <div class="panel" id="kl"></div>
+</section>
+</main>
+
+<footer><div class="wrap">
+  <div class="sig">Built by Zann, from a Group 2 course project, 261434 Computer Network Design and Management, Chiang Mai University.</div>
+  <div style="margin-top:6px">A design proposal, not a deployed network. Source: <a href="https://github.com/Zann208/NETDES-EB1-EB2-Campus-Design">github.com/Zann208/NETDES-EB1-EB2-Campus-Design</a></div>
+</div></footer>
+
+<script>
+const D=/*__DATA__*/null;
+const $=s=>document.querySelector(s), fmt=n=>n.toLocaleString('en-US'), esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const TABS=[['overview','Overview'],['topology','Topology'],['addressing','Addressing'],['wireless','Wireless'],['security','Security'],['budget','Budget'],['lab','Lab'],['checks','Checks']];
+function go(id){document.querySelectorAll('section.tab').forEach(s=>s.classList.toggle('on',s.id==='t-'+id));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===id));
+  try{history.replaceState(null,'','#'+id)}catch(e){} window.scrollTo(0,0)}
+$('#nav').innerHTML=TABS.map(([id,l])=>`<button data-t="${id}">${l}</button>`).join('');
+document.addEventListener('click',e=>{const b=e.target.closest('[data-t],[data-go]'); if(b) go(b.dataset.t||b.dataset.go)});
+
+// Overview
+const users=D.floors.reduce((a,f)=>a+f.users,0), wifi=D.floors.reduce((a,f)=>a+f.wifi,0);
+const wired=D.floors.reduce((a,f)=>a+f.pc+f.phone+f.printer_av+f.servers+f.cctv,0), aps=D.floors.reduce((a,f)=>a+f.aps,0);
+const pre=D.bom.reduce((a,r)=>a+r.qty*r.unit_thb,0), total=Math.round(pre*1.07);
+const pass=D.checks.filter(c=>c.s==='PASS').length, warn=D.checks.filter(c=>c.s==='WARN').length, fail=D.checks.filter(c=>c.s==='FAIL').length;
+$('#stats').innerHTML=[[fmt(users),'peak users',''],[fmt(wifi+wired),'devices',''],[aps,'Wi-Fi 6 APs','g'],[D.vlans.length,'VLANs','g'],
+  ['THB '+(total/1e6).toFixed(2)+'M','incl. VAT','a'],[pass+'/'+D.checks.length,'checks pass','v']]
+  .map(([b,s,c])=>`<div class="stat ${c}"><b>${b}</b><span>${s}</span></div>`).join('');
+$('#hdrStat').textContent=`${pass} pass · ${warn} warn · ${fail} fail`;
+
+// Addressing
+const ipn=s=>s.split('.').reduce((a,o)=>a*256+(+o),0);
+function vrows(q){q=(q||'').toLowerCase();
+  $('#vt').innerHTML=D.vlans.filter(v=>!q||(v.id+' '+v.name+' '+v.zone+' '+v.scope).toLowerCase().includes(q)).map(v=>{
+    const pct=Math.round((1-(v.need+1)/v.usable)*100);
+    return `<tr><td class="n">${v.id}</td><td>${esc(v.name)}</td><td>${v.scope}</td><td class="m">${v.subnet}</td><td class="m">${v.gw}</td>
+    <td class="n">${v.endpoints}</td><td class="n">${v.need}</td><td class="n">${v.usable}</td><td style="min-width:110px"><span class="badge ${pct<15?'am':'gr'}">${pct}% free</span></td></tr>`}).join('')}
+vrows(); $('#vf').addEventListener('input',e=>vrows(e.target.value));
+function lookup(){const q=$('#ipq').value.trim(); if(!/^\d{1,3}(\.\d{1,3}){3}$/.test(q)){$('#ipout').textContent='Not an IPv4 address.';return}
+  const x=ipn(q); const hit=D.vlans.find(v=>{const[a,p]=v.subnet.split('/');const base=ipn(a),size=2**(32-p);return x>=base&&x<base+size});
+  if(!hit){$('#ipout').textContent=(x>=ipn('10.10.0.0')&&x<ipn('10.10.32.0'))?'Inside 10.10.0.0/19 but unassigned: reserved for growth.':'Outside the faculty plan (10.10.0.0/19).';return}
+  const[a,p]=hit.subnet.split('/');const off=x-ipn(a),size=2**(32-p);
+  const role=off===0?'network address':off===size-1?'broadcast address':off===1?'gateway (firewall HA virtual IP)':(off<=10?'reserved (infrastructure, excluded from DHCP)':'host address');
+  $('#ipout').textContent=`VLAN ${hit.id} ${hit.name}  ·  ${hit.subnet}  ·  zone ${hit.zone}\n${q} is the ${role}. Gateway ${hit.gw}.`}
+$('#ipgo').onclick=lookup; $('#ipq').addEventListener('keydown',e=>{if(e.key==='Enter')lookup()});
+
+// Wireless
+function wcalc(){const u=+$('#wu').value||0,m=+$('#wm').value||0,d=+$('#wd').value||0;
+  const cap=Math.ceil(u*m/150),cli=Math.ceil(u*d/150),n=Math.max(cap,cli,u>0?1:0);
+  $('#wout').textContent=`Demand ${fmt(u*m)} Mbps -> ${cap} AP(s) by capacity; ${Math.ceil(u*d)} clients -> ${cli} AP(s) by client count.\nInstall ${n} AP(s).`}
+['wu','wm','wd'].forEach(i=>$('#'+i).addEventListener('input',wcalc)); wcalc();
+$('#ft').innerHTML=D.floors.map(f=>`<tr><td>${f.id}</td><td class="n">${f.users}</td><td class="n">${f.wifi}</td><td class="n">${f.aps}</td><td class="n">${Math.round(f.wifi/f.aps)}</td></tr>`).join('')
+  +`<tr><td><b>Total</b></td><td class="n"><b>${users}</b></td><td class="n"><b>${fmt(wifi)}</b></td><td class="n"><b>${aps}</b></td><td class="n"><b>${Math.round(wifi/aps)}</b></td></tr>`;
+$('#st').innerHTML=Object.entries(D.ssids).map(([k,v])=>`<tr><td><b>${k}</b></td><td>${esc(v.security)}</td><td class="m">${v.vlans.join(' / ')}</td></tr>`).join('');
+
+// Budget
+$('#bTotal').textContent='THB '+fmt(total)+' incl. VAT';
+const cats={}; D.bom.forEach(r=>cats[r.category]=(cats[r.category]||0)+r.qty*r.unit_thb);
+const cmax=Math.max(...Object.values(cats));
+$('#bcat').innerHTML='<h2>By category</h2>'+Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([k,v])=>
+  `<div style="margin-top:10px"><div style="display:flex;justify-content:space-between;font-size:13.5px"><span>${k}</span><span class="m" style="font-family:var(--mono)">${fmt(v)}</span></div><div class="bar"><i style="width:${v/cmax*100}%"></i></div></div>`).join('')
+  +`<div style="margin-top:14px;font-family:var(--mono);font-size:13px;color:var(--dim)">Before VAT ${fmt(pre)} · VAT 7% ${fmt(total-pre)} · Total ${fmt(total)}</div>`;
+$('#bt').innerHTML=D.bom.map(r=>`<tr><td>${r.category}</td><td>${esc(r.item)}</td><td>${esc(r.spec)}</td><td class="n">${r.qty}</td><td class="n">${fmt(r.unit_thb)}</td><td class="n">${fmt(r.qty*r.unit_thb)}</td></tr>`).join('');
+
+// Lab
+const names=Object.keys(D.configs); $('#cs').innerHTML=names.map(n=>`<option>${n}</option>`).join('');
+function showCfg(){const n=$('#cs').value,t=D.configs[n];$('#cl').textContent=t.split('\n').length+' lines';
+  $('#cv').innerHTML=esc(t).split('\n').map(l=>l.startsWith('!')?`<span class="c">${l}</span>`:/^(interface|vlan|ip dhcp pool|ip access-list|line|router)\b/.test(l)?`<span class="k">${l}</span>`:l).join('\n')}
+$('#cs').addEventListener('change',showCfg); showCfg();
+$('#cc').onclick=async()=>{try{await navigator.clipboard.writeText(D.configs[$('#cs').value]);$('#cc').textContent='Copied'}catch(e){$('#cc').textContent='Copy failed'}setTimeout(()=>$('#cc').textContent='Copy config',1500)};
+$('#tt').innerHTML=D.tests.map(t=>`<tr><td class="m">${t.id}</td><td>${esc(t.what).replace(/`([^`]+)`/g,'<code>$1</code>')}</td><td>${esc(t.expected).replace(/`([^`]+)`/g,'<code>$1</code>')}</td><td><span class="badge ${/pass/i.test(t.status)?'gr':/fail/i.test(t.status)?'rd':''}">${esc(t.status||'Not run')}</span></td></tr>`).join('');
+
+// Checks
+$('#ckTitle').textContent=`${pass} pass, ${warn} warnings, ${fail} failures`;
+[...new Set(D.checks.map(c=>c.sec))].forEach(s=>$('#kf').insertAdjacentHTML('beforeend',`<option>${s}</option>`));
+function krows(){const f=$('#kf').value,s=$('#ks').value;
+  $('#kl').innerHTML=D.checks.filter(c=>(!f||c.sec===f)&&(!s||c.s===s)).map(c=>`<div class="check"><span class="badge ${c.s==='PASS'?'gr':c.s==='WARN'?'am':'rd'}">${c.s}</span><span class="sec">${c.sec}</span><span>${esc(c.msg)}</span></div>`).join('')||'No matching checks.'}
+$('#kf').onchange=krows;$('#ks').onchange=krows;krows();
+
+go((location.hash||'#overview').slice(1).replace(/[^a-z]/g,'')||'overview');
+if(!document.querySelector('section.tab.on')) go('overview');
+</script>
+</body>
+</html>
