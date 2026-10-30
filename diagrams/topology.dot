@@ -1,29 +1,29 @@
 digraph topology {
-  graph [rankdir=TB, splines=true, nodesep=0.35, ranksep=0.6, fontname="Helvetica", label=<<b>EB1-EB2 Hierarchical Physical Topology</b><br/><font point-size="10">Generated from design/network.yaml</font>>, labelloc=t, fontsize=16, bgcolor="white"];
+  graph [rankdir=TB, splines=true, nodesep=0.35, ranksep=0.6, fontname="Helvetica", bgcolor="white", label=<<b>EB1-EB2 Hierarchical Physical Topology</b><br/><font point-size="10">Generated from design/network.yaml</font>>, labelloc=t, fontsize=16];
   node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=11, color="#555555"];
   edge [arrowhead=none, fontname="Helvetica", fontsize=8, fontcolor="#333333"];
-  "ITSC" [label=<<b>ITSC</b><br/><font point-size="9">University Core (campus L3)</font>>, fillcolor="#ffffff"];
+  "ITSC" [label=<<b>ITSC</b><br/><font point-size="9">University Core (campus L3)</font>>, style="rounded,filled", fillcolor="#ffffff"];
   subgraph cluster_eb2 { label="Building EB2"; style="rounded"; color="#9aa7b8"; fontsize=12;
     subgraph cluster_mdf { label="EB2-MDF (server room, floor 1)"; style="rounded,dashed"; color="#b5b5b5";
-      "EB2-MDF-FW01" [label=<<b>EB2-MDF-FW01</b><br/><font point-size="9">FortiGate 200F (active)</font>>, fillcolor="#fde8e4"];
-      "EB2-MDF-FW02" [label=<<b>EB2-MDF-FW02</b><br/><font point-size="9">FortiGate 200F (passive)</font>>, fillcolor="#fde8e4"];
-      "EB2-MDF-CS" [label=<<b>EB2-MDF-CS</b><br/><font point-size="9">C9300-24T x2, StackWise-480, NM-8X</font>>, fillcolor="#e3edfb"];
-      "EB2-MDF-WLC01" [label=<<b>EB2-MDF-WLC01</b><br/><font point-size="9">C9800-L-F</font>>, fillcolor="#fff4d6"];
-      "SERVERS" [label=<<b>SERVERS</b><br/><font point-size="9">Servers / NVR (12 hosts)</font>>, fillcolor="#ffffff"];
+      "EB2-MDF-FW01" [label=<<b>EB2-MDF-FW01</b><br/><font point-size="9">FortiGate 200F (active)</font>>, style="rounded,filled", fillcolor="#fde8e4"];
+      "EB2-MDF-FW02" [label=<<b>EB2-MDF-FW02</b><br/><font point-size="9">FortiGate 200F (passive)</font>>, style="rounded,filled", fillcolor="#fde8e4"];
+      "EB2-MDF-CS" [label=<<b>EB2-MDF-CS</b><br/><font point-size="9">C9300-24T x2, StackWise-480, NM-8X</font>>, style="rounded,filled", fillcolor="#e3edfb"];
+      "EB2-MDF-WLC01" [label=<<b>EB2-MDF-WLC01</b><br/><font point-size="9">C9800-L-F</font>>, style="rounded,filled", fillcolor="#fff4d6"];
+      "SERVERS" [label=<<b>SERVERS</b><br/><font point-size="9">Servers / NVR (12 hosts)</font>>, style="rounded,filled", fillcolor="#ffffff"];
       {rank=same; "EB2-MDF-FW01"; "EB2-MDF-FW02";}
     }
-    "EB2-F2-DS01" [label=<<b>EB2-F2-DS01</b><br/><font point-size="9">C9200L-24T-4X</font>>, fillcolor="#e6f4f1"];
-    "EB2-F1-AS" [label=<<b>EB2-F1-AS</b><br/><font point-size="9">3-switch stack<br/>10 APs, 30 PC, 21 phone, 4 CCTV</font>>, fillcolor="#f3f3f3"];
-    "EB2-F2-AS" [label=<<b>EB2-F2-AS</b><br/><font point-size="9">3-switch stack<br/>9 APs, 41 PC, 21 phone, 3 CCTV</font>>, fillcolor="#f3f3f3"];
-    "EB2-F3-AS" [label=<<b>EB2-F3-AS</b><br/><font point-size="9">3-switch stack<br/>9 APs, 34 PC, 25 phone, 2 CCTV</font>>, fillcolor="#f3f3f3"];
+    "EB2-F2-DS01" [label=<<b>EB2-F2-DS01</b><br/><font point-size="9">C9200L-24T-4X</font>>, style="rounded,filled", fillcolor="#e6f4f1"];
+    "EB2-F1-AS" [label=<<b>EB2-F1-AS</b><br/><font point-size="9">3-switch stack<br/>10 APs, 30 PC, 21 phone, 4 CCTV</font>>, style="rounded,filled", fillcolor="#f3f3f3"];
+    "EB2-F2-AS" [label=<<b>EB2-F2-AS</b><br/><font point-size="9">3-switch stack<br/>9 APs, 41 PC, 21 phone, 3 CCTV</font>>, style="rounded,filled", fillcolor="#f3f3f3"];
+    "EB2-F3-AS" [label=<<b>EB2-F3-AS</b><br/><font point-size="9">3-switch stack<br/>9 APs, 34 PC, 25 phone, 2 CCTV</font>>, style="rounded,filled", fillcolor="#f3f3f3"];
   }
   subgraph cluster_eb1 { label="Building EB1"; style="rounded"; color="#9aa7b8"; fontsize=12;
-    "EB1-F1-CS" [label=<<b>EB1-F1-CS</b><br/><font point-size="9">C9200L-24T-4X x2 stack (EB1 core)</font>>, fillcolor="#e3edfb"];
-    "EB1-F2-DS01" [label=<<b>EB1-F2-DS01</b><br/><font point-size="9">C9200L-24T-4X</font>>, fillcolor="#e6f4f1"];
-    "EB1-F3-DS01" [label=<<b>EB1-F3-DS01</b><br/><font point-size="9">C9200L-24T-4X</font>>, fillcolor="#e6f4f1"];
-    "EB1-F1-AS" [label=<<b>EB1-F1-AS</b><br/><font point-size="9">2-switch stack<br/>9 APs, 16 PC, 12 phone, 3 CCTV</font>>, fillcolor="#f3f3f3"];
-    "EB1-F2-AS" [label=<<b>EB1-F2-AS</b><br/><font point-size="9">2-switch stack<br/>11 APs, 15 PC, 13 phone, 3 CCTV</font>>, fillcolor="#f3f3f3"];
-    "EB1-F3-AS" [label=<<b>EB1-F3-AS</b><br/><font point-size="9">1-switch stack<br/>9 APs, 3 PC, 1 phone, 2 CCTV</font>>, fillcolor="#f3f3f3"];
+    "EB1-F1-CS" [label=<<b>EB1-F1-CS</b><br/><font point-size="9">C9200L-24T-4X x2 stack (EB1 core)</font>>, style="rounded,filled", fillcolor="#e3edfb"];
+    "EB1-F2-DS01" [label=<<b>EB1-F2-DS01</b><br/><font point-size="9">C9200L-24T-4X</font>>, style="rounded,filled", fillcolor="#e6f4f1"];
+    "EB1-F3-DS01" [label=<<b>EB1-F3-DS01</b><br/><font point-size="9">C9200L-24T-4X</font>>, style="rounded,filled", fillcolor="#e6f4f1"];
+    "EB1-F1-AS" [label=<<b>EB1-F1-AS</b><br/><font point-size="9">2-switch stack<br/>9 APs, 16 PC, 12 phone, 3 CCTV</font>>, style="rounded,filled", fillcolor="#f3f3f3"];
+    "EB1-F2-AS" [label=<<b>EB1-F2-AS</b><br/><font point-size="9">2-switch stack<br/>11 APs, 15 PC, 13 phone, 3 CCTV</font>>, style="rounded,filled", fillcolor="#f3f3f3"];
+    "EB1-F3-AS" [label=<<b>EB1-F3-AS</b><br/><font point-size="9">1-switch stack<br/>9 APs, 3 PC, 1 phone, 2 CCTV</font>>, style="rounded,filled", fillcolor="#f3f3f3"];
   }
   "ITSC" -> "EB2-MDF-FW01" [color="#1f5fbf", penwidth=2.4, label="OS2 10G"];
   "ITSC" -> "EB2-MDF-FW02" [color="#1f5fbf", penwidth=2.4, label="OS2 10G"];

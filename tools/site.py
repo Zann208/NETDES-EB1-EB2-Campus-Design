@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Build the NetDes console (site/index.html) from the design.
+"""Build the design console (site/index.html) from the design.
 
 Everything shown on the page comes from design/network.yaml, design/bom.csv,
-lab/configs/, lab/tests.md, diagrams/topology.svg and a live run of
+lab/configs/, lab/tests.md, diagrams/topology-blueprint.svg and a live run of
 tools/validate.py, so the console cannot disagree with the repository.
 """
 from __future__ import annotations
@@ -11,6 +11,8 @@ import csv
 import html
 import ipaddress
 import json
+import shutil
+from datetime import date
 import subprocess
 import sys
 from pathlib import Path
@@ -46,11 +48,12 @@ for line in (ROOT / "lab" / "tests.md").read_text().splitlines():
     if line.startswith("| T") and len(cells) >= 4:
         tests.append({"id": cells[0], "what": " / ".join(cells[1:-3]) if len(cells) > 5 else cells[1],
                       "expected": cells[-3], "actual": cells[-2], "status": cells[-1]})
-svg = (ROOT / "diagrams" / "topology.svg").read_text()
+svg = (ROOT / "diagrams" / "topology-blueprint.svg").read_text()
 svg = svg[svg.index("<svg"):]
 
 data = {"vlans": vlans, "floors": floors, "bom": bom, "configs": configs, "tests": tests,
-        "checks": checks, "ssids": D["ssids"], "policy": D["policy"], "meta": D["meta"]}
+        "checks": checks, "ssids": D["ssids"], "policy": D["policy"], "meta": D["meta"],
+        "links": D["links"], "idfs": D["idfs"], "build": date.today().isoformat()}
 
 page = (ROOT / "tools" / "templates" / "site.html").read_text()
 page = page.replace("/*__DATA__*/null", json.dumps(data, separators=(",", ":"), default=str).replace("</", "<\\/"))
@@ -58,4 +61,6 @@ page = page.replace("<!--__SVG__-->", svg)
 OUT.mkdir(exist_ok=True)
 (OUT / "index.html").write_text(page)
 (OUT / ".nojekyll").write_text("")
+shutil.copytree(ROOT / "tools" / "templates" / "fonts", OUT / "fonts", dirs_exist_ok=True)
+shutil.copy(ROOT / "lab" / "pt-topology.png", OUT / "pt-topology.png")
 print(f"Wrote site/index.html ({len(page) // 1024} KB): {len(checks)} checks, {len(configs)} configs, {len(tests)} tests")

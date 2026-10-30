@@ -1,0 +1,48 @@
+digraph topology {
+  graph [rankdir=TB, splines=true, nodesep=0.35, ranksep=0.6, fontname="Courier", bgcolor="transparent", fontcolor="#f2f6fb", pad=0.3];
+  node [shape=box, style="rounded", fontname="Courier", fontsize=11, color="#f2f6fb", fontcolor="#f2f6fb", penwidth=1.1, margin="0.16,0.07"];
+  edge [arrowhead=none, fontname="Courier", fontsize=8.5, fontcolor="#b9cde6"];
+  "ITSC" [label=<<b>ITSC</b><br/><font point-size="9">University Core (campus L3)</font>>];
+  subgraph cluster_eb2 { label="Building EB2"; style="rounded,dashed"; color="#b9cde6"; fontcolor="#f2f6fb"; fontsize=12;
+    subgraph cluster_mdf { label="EB2-MDF (server room, floor 1)"; style="dotted"; color="#b9cde6"; fontcolor="#b9cde6";
+      "EB2-MDF-FW01" [label=<<b>EB2-MDF-FW01</b><br/><font point-size="9">FortiGate 200F (active)</font>>];
+      "EB2-MDF-FW02" [label=<<b>EB2-MDF-FW02</b><br/><font point-size="9">FortiGate 200F (passive)</font>>];
+      "EB2-MDF-CS" [label=<<b>EB2-MDF-CS</b><br/><font point-size="9">C9300-24T x2, StackWise-480, NM-8X</font>>];
+      "EB2-MDF-WLC01" [label=<<b>EB2-MDF-WLC01</b><br/><font point-size="9">C9800-L-F</font>>];
+      "SERVERS" [label=<<b>SERVERS</b><br/><font point-size="9">Servers / NVR (12 hosts)</font>>];
+      {rank=same; "EB2-MDF-FW01"; "EB2-MDF-FW02";}
+    }
+    "EB2-F2-DS01" [label=<<b>EB2-F2-DS01</b><br/><font point-size="9">C9200L-24T-4X</font>>];
+    "EB2-F1-AS" [label=<<b>EB2-F1-AS</b><br/><font point-size="9">3-switch stack<br/>10 APs, 30 PC, 21 phone, 4 CCTV</font>>];
+    "EB2-F2-AS" [label=<<b>EB2-F2-AS</b><br/><font point-size="9">3-switch stack<br/>9 APs, 41 PC, 21 phone, 3 CCTV</font>>];
+    "EB2-F3-AS" [label=<<b>EB2-F3-AS</b><br/><font point-size="9">3-switch stack<br/>9 APs, 34 PC, 25 phone, 2 CCTV</font>>];
+  }
+  subgraph cluster_eb1 { label="Building EB1"; style="rounded,dashed"; color="#b9cde6"; fontcolor="#f2f6fb"; fontsize=12;
+    "EB1-F1-CS" [label=<<b>EB1-F1-CS</b><br/><font point-size="9">C9200L-24T-4X x2 stack (EB1 core)</font>>];
+    "EB1-F2-DS01" [label=<<b>EB1-F2-DS01</b><br/><font point-size="9">C9200L-24T-4X</font>>];
+    "EB1-F3-DS01" [label=<<b>EB1-F3-DS01</b><br/><font point-size="9">C9200L-24T-4X</font>>];
+    "EB1-F1-AS" [label=<<b>EB1-F1-AS</b><br/><font point-size="9">2-switch stack<br/>9 APs, 16 PC, 12 phone, 3 CCTV</font>>];
+    "EB1-F2-AS" [label=<<b>EB1-F2-AS</b><br/><font point-size="9">2-switch stack<br/>11 APs, 15 PC, 13 phone, 3 CCTV</font>>];
+    "EB1-F3-AS" [label=<<b>EB1-F3-AS</b><br/><font point-size="9">1-switch stack<br/>9 APs, 3 PC, 1 phone, 2 CCTV</font>>];
+  }
+  "ITSC" -> "EB2-MDF-FW01" [color="#f2f6fb:transparent:#f2f6fb", penwidth=1.1, label="OS2 10G"];
+  "ITSC" -> "EB2-MDF-FW02" [color="#f2f6fb:transparent:#f2f6fb", penwidth=1.1, label="OS2 10G"];
+  "EB2-MDF-FW01" -> "EB2-MDF-CS" [color="#f2f6fb", penwidth=1.6, label="OM4 10G"];
+  "EB2-MDF-FW02" -> "EB2-MDF-CS" [color="#f2f6fb", penwidth=1.6, label="OM4 10G"];
+  "EB2-MDF-CS" -> "EB2-MDF-WLC01" [color="#f2f6fb", penwidth=1.6, label="OM4 2x10G LACP"];
+  "EB2-MDF-CS" -> "EB1-F1-CS" [color="#f2f6fb:transparent:#f2f6fb", penwidth=1.1, label="OS2 2x10G LACP\n2 diverse paths"];
+  "EB2-MDF-CS" -> "EB2-F1-AS" [color="#f2f6fb", penwidth=1.6, label="OM4 2x10G LACP"];
+  "EB2-MDF-CS" -> "EB2-F2-DS01" [color="#f2f6fb", penwidth=1.6, label="OM4 2x10G LACP"];
+  "EB2-F2-DS01" -> "EB2-F2-AS" [color="#f2f6fb", penwidth=1.6, label="OM4 10G\n+ Cat6 1G backup"];
+  "EB2-F2-DS01" -> "EB2-F3-AS" [color="#f2f6fb", penwidth=1.6, label="OM4 10G\n+ Cat6 1G backup"];
+  "EB1-F1-CS" -> "EB1-F1-AS" [color="#f2f6fb", penwidth=1.6, label="OM4 2x10G LACP"];
+  "EB1-F1-CS" -> "EB1-F2-DS01" [color="#f2f6fb", penwidth=1.6, label="OM4 2x10G LACP"];
+  "EB1-F1-CS" -> "EB1-F3-DS01" [color="#f2f6fb", penwidth=1.6, label="OM4 2x10G LACP"];
+  "EB1-F2-DS01" -> "EB1-F2-AS" [color="#f2f6fb", penwidth=1.6, label="OM4 2x10G LACP"];
+  "EB1-F3-DS01" -> "EB1-F3-AS" [color="#f2f6fb", penwidth=1.6, label="OM4 2x10G LACP"];
+  "EB2-MDF-FW01" -> "EB2-MDF-FW02" [style=dotted, color="#f2f6fb", penwidth=1.6, label="HA", constraint=false];
+  "EB2-MDF-CS" -> "SERVERS" [color="#b9cde6", penwidth=1.1, style=dashed, label="Cat6 1G"];
+  legend [shape=plaintext, style="", label=<<table border="1" color="#b9cde6" cellborder="0" cellpadding="4" cellspacing="0"><tr><td colspan="2" align="left"><font color="#f2f6fb"><b>LEGEND</b></font></td></tr><tr><td><font color="#f2f6fb">══════</font></td><td align="left"><font color="#f2f6fb">OS2 single-mode, 10GBASE-LR</font></td></tr><tr><td><font color="#f2f6fb">━━━━━━</font></td><td align="left"><font color="#f2f6fb">OM4 multimode, 10GBASE-SR</font></td></tr><tr><td><font color="#b9cde6">─ ─ ─ ─</font></td><td align="left"><font color="#f2f6fb">Cat6 U/UTP, 1G</font></td></tr><tr><td><font color="#f2f6fb">· · · · ·</font></td><td align="left"><font color="#f2f6fb">FortiGate HA heartbeat</font></td></tr></table>>];
+  "ITSC" -> legend [style=invis];
+  {rank=same; "ITSC"; legend;}
+}
