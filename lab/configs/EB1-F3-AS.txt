@@ -35,6 +35,13 @@ ip dhcp snooping
 ip dhcp snooping vlan 20,30,110,120,130,140
 no ip dhcp snooping information option
 !
+interface Port-channel2
+ description LACP to EB1-F3-DS01
+ switchport mode trunk
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 10,20,30,110,120,130,140,150
+ ip dhcp snooping trust
+!
 interface GigabitEthernet0/1
  description to EB1-F3-DS01 (OM4 2x10G SR)
  switchport mode trunk
@@ -50,12 +57,7 @@ interface GigabitEthernet0/2
  channel-group 2 mode active
  no shutdown
 !
-interface Port-channel2
- description LACP to EB1-F3-DS01
- switchport mode trunk
- switchport trunk native vlan 999
- switchport trunk allowed vlan 10,20,30,110,120,130,140,150
- ip dhcp snooping trust
+
 !
 interface FastEthernet0/1
  description ap

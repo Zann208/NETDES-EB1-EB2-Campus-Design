@@ -44,14 +44,34 @@ vlan 250
 vlan 999
  name BLACKHOLE
 !
-interface GigabitEthernet1/0/21
+interface Port-channel1
+ description LACP to EB1-F1-CS
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 10,20,30,110,120,130,140,150
+interface Port-channel2
+ description LACP to EB2-F1-AS
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 10,20,30,210,220,230,240,250
+ spanning-tree guard root
+interface Port-channel3
+ description LACP to EB2-F2-DS01
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 10,20,30,210,220,230,240,250
+!
+interface GigabitEthernet1/0/22
  description to EB2-MDF-FW01 (OM4 10G SR 802.1Q trunk)
  switchport trunk encapsulation dot1q
  switchport mode trunk
  switchport trunk native vlan 999
  switchport trunk allowed vlan 10,20,30,40,110,120,130,140,150,210,220,230,240,250
  no shutdown
-interface GigabitEthernet1/0/22
+interface GigabitEthernet1/0/21
  description to EB2-MDF-FW02 (OM4 10G SR 802.1Q trunk)
  switchport trunk encapsulation dot1q
  switchport mode trunk
@@ -114,25 +134,7 @@ interface GigabitEthernet1/0/7
  switchport trunk allowed vlan 10,110,120,130,140,210,220,230,240
  no shutdown
 !
-interface Port-channel1
- description LACP to EB1-F1-CS
- switchport trunk encapsulation dot1q
- switchport mode trunk
- switchport trunk native vlan 999
- switchport trunk allowed vlan 10,20,30,110,120,130,140,150
-interface Port-channel2
- description LACP to EB2-F1-AS
- switchport trunk encapsulation dot1q
- switchport mode trunk
- switchport trunk native vlan 999
- switchport trunk allowed vlan 10,20,30,210,220,230,240,250
- spanning-tree guard root
-interface Port-channel3
- description LACP to EB2-F2-DS01
- switchport trunk encapsulation dot1q
- switchport mode trunk
- switchport trunk native vlan 999
- switchport trunk allowed vlan 10,20,30,210,220,230,240,250
+
 !
 interface GigabitEthernet1/0/23
  description admin-pc

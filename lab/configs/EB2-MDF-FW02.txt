@@ -125,7 +125,6 @@ interface GigabitEthernet0/0/1.10
  standby 10 ip 10.10.16.1
  standby 10 priority 100
  standby 10 preempt
- standby 10 track GigabitEthernet0/0/0 20
 !
 interface GigabitEthernet0/0/1.20
  description AP-MGMT
@@ -134,7 +133,6 @@ interface GigabitEthernet0/0/1.20
  standby 20 ip 10.10.17.1
  standby 20 priority 100
  standby 20 preempt
- standby 20 track GigabitEthernet0/0/0 20
 !
 interface GigabitEthernet0/0/1.30
  description VOICE
@@ -143,7 +141,6 @@ interface GigabitEthernet0/0/1.30
  standby 30 ip 10.10.18.1
  standby 30 priority 100
  standby 30 preempt
- standby 30 track GigabitEthernet0/0/0 20
 !
 interface GigabitEthernet0/0/1.40
  description SERVER
@@ -152,7 +149,6 @@ interface GigabitEthernet0/0/1.40
  standby 40 ip 10.10.16.65
  standby 40 priority 100
  standby 40 preempt
- standby 40 track GigabitEthernet0/0/0 20
 !
 interface GigabitEthernet0/0/1.110
  description EB1-STAFF
@@ -161,7 +157,6 @@ interface GigabitEthernet0/0/1.110
  standby 110 ip 10.10.4.1
  standby 110 priority 100
  standby 110 preempt
- standby 110 track GigabitEthernet0/0/0 20
 !
 interface GigabitEthernet0/0/1.120
  description EB1-STUDENT
@@ -170,7 +165,6 @@ interface GigabitEthernet0/0/1.120
  standby 120 ip 10.10.0.1
  standby 120 priority 100
  standby 120 preempt
- standby 120 track GigabitEthernet0/0/0 20
  ip access-group ZONE-STUDENT-IN in
 !
 interface GigabitEthernet0/0/1.130
@@ -180,7 +174,6 @@ interface GigabitEthernet0/0/1.130
  standby 130 ip 10.10.5.1
  standby 130 priority 100
  standby 130 preempt
- standby 130 track GigabitEthernet0/0/0 20
  ip access-group ZONE-GUEST-IN in
 !
 interface GigabitEthernet0/0/1.140
@@ -190,7 +183,6 @@ interface GigabitEthernet0/0/1.140
  standby 140 ip 10.10.5.129
  standby 140 priority 100
  standby 140 preempt
- standby 140 track GigabitEthernet0/0/0 20
  ip access-group ZONE-IOT-IN in
 !
 interface GigabitEthernet0/0/1.150
@@ -200,7 +192,6 @@ interface GigabitEthernet0/0/1.150
  standby 150 ip 10.10.6.1
  standby 150 priority 100
  standby 150 preempt
- standby 150 track GigabitEthernet0/0/0 20
  ip access-group ZONE-CCTV-IN in
 !
 interface GigabitEthernet0/0/1.210
@@ -210,7 +201,6 @@ interface GigabitEthernet0/0/1.210
  standby 210 ip 10.10.12.1
  standby 210 priority 100
  standby 210 preempt
- standby 210 track GigabitEthernet0/0/0 20
 !
 interface GigabitEthernet0/0/1.220
  description EB2-STUDENT
@@ -219,7 +209,6 @@ interface GigabitEthernet0/0/1.220
  standby 220 ip 10.10.8.1
  standby 220 priority 100
  standby 220 preempt
- standby 220 track GigabitEthernet0/0/0 20
  ip access-group ZONE-STUDENT-IN in
 !
 interface GigabitEthernet0/0/1.230
@@ -229,7 +218,6 @@ interface GigabitEthernet0/0/1.230
  standby 230 ip 10.10.14.1
  standby 230 priority 100
  standby 230 preempt
- standby 230 track GigabitEthernet0/0/0 20
  ip access-group ZONE-GUEST-IN in
 !
 interface GigabitEthernet0/0/1.240
@@ -239,7 +227,6 @@ interface GigabitEthernet0/0/1.240
  standby 240 ip 10.10.14.129
  standby 240 priority 100
  standby 240 preempt
- standby 240 track GigabitEthernet0/0/0 20
  ip access-group ZONE-IOT-IN in
 !
 interface GigabitEthernet0/0/1.250
@@ -249,7 +236,6 @@ interface GigabitEthernet0/0/1.250
  standby 250 ip 10.10.15.1
  standby 250 priority 100
  standby 250 preempt
- standby 250 track GigabitEthernet0/0/0 20
  ip access-group ZONE-CCTV-IN in
 !
 interface GigabitEthernet0/0/2

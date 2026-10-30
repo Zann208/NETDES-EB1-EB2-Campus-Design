@@ -57,7 +57,6 @@ interface GigabitEthernet0/0/1.{{ s.id }}
  standby {{ s.id }} ip {{ s.gateway }}
  standby {{ s.id }} priority {{ dev.priority }}
  standby {{ s.id }} preempt
- standby {{ s.id }} track GigabitEthernet0/0/0 20
 {%- if s.acl %}
  ip access-group {{ s.acl }} in
 {%- endif %}

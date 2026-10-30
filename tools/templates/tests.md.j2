@@ -39,7 +39,7 @@ Fa0/7 (EB2 guest test port), and EB1-F3-AS Fa0/2 (EB1 staff); static hosts as in
 |----|--------|----------|--------|--------|
 | T17 | `show standby brief` on both firewalls | FW01 Active, FW02 Standby for all groups | | Not run |
 | T18 | Continuous ping EB2 staff PC -> `{{ dns }}`, then shut FW01 Gi0/0/1 | FW02 becomes Active; pings resume | | Not run |
-| T19 | Shut FW01 Gi0/0/0 (outside) | HSRP tracking drops FW01 priority; FW02 takes over inside groups | | Not run |
+| T19 | Shut FW01 Gi0/0/0 (outside) | Outside group 90 fails over to FW02. Inside groups stay on FW01: Packet Tracer has no HSRP tracking (FortiGate HA monitors links natively) | | Not run |
 | T20 | `show etherchannel summary` on EB2-MDF-CS and EB1-F1-CS | All Po bundles in use (SU / P) | | Not run |
 | T21 | Shut one member of Po1 (inter-building) | EB1 traffic continues on the other member | | Not run |
 | T22 | `show spanning-tree vlan 210` on EB2-F2-AS | Gi0/1 root port, Gi0/2 alternate (blocked) | | Not run |

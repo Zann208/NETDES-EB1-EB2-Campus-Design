@@ -31,6 +31,13 @@ vlan 250
 vlan 999
  name BLACKHOLE
 !
+interface Port-channel3
+ description LACP to EB2-MDF-CS
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 10,20,30,210,220,230,240,250
+!
 interface GigabitEthernet1/0/1
  description to EB2-MDF-CS (OM4 2x10G SR (riser))
  switchport trunk encapsulation dot1q
@@ -80,12 +87,7 @@ interface GigabitEthernet1/0/6
  spanning-tree guard root
  no shutdown
 !
-interface Port-channel3
- description LACP to EB2-MDF-CS
- switchport trunk encapsulation dot1q
- switchport mode trunk
- switchport trunk native vlan 999
- switchport trunk allowed vlan 10,20,30,210,220,230,240,250
+
 !
 !
 interface range GigabitEthernet1/0/7 - 24

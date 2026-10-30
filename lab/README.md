@@ -20,7 +20,7 @@ python tools/render.py     # writes lab/configs/, lab/cabling.md, lab/tests.md
 
 **Scaled down, stated plainly:** links are 1G copper (design: 10G fibre); one switch per stack;
 HSRP instead of FortiGate HA; stateless ACLs instead of a stateful NGFW with IPS;
-WPA2 instead of WPA3-Enterprise and 802.1X; PT's WLC maps an SSID to one VLAN, so the
+no HSRP tracking; WPA2 instead of WPA3-Enterprise and 802.1X; PT's WLC maps an SSID to one VLAN, so the
 per-building policy tag becomes EB2 VLANs only. The lab proves the logical design
 (VLANs, trunks, LACP, STP roles, gateway redundancy, DHCP, zone policy, AP join),
 not RF coverage or throughput. Coverage evidence is the Ruijie heatmaps.
@@ -51,5 +51,6 @@ not RF coverage or throughput. Coverage evidence is the Ruijie heatmaps.
 
 - STP root for every VLAN: EB2-MDF-CS (priority 4096); EB1-F1-CS is secondary for EB1 VLANs (8192).
 - EB2-F2-AS and EB2-F3-AS: Gi0/1 forwarding, Gi0/2 alternate (cost 200 stands in for 10G vs 1G).
-- HSRP: FW01 active (110), FW02 standby (100), FW01 drops to 90 if its outside link fails.
+- HSRP: FW01 active (110), FW02 standby (100). Packet Tracer does not support HSRP interface or object
+  tracking, so an outside-link failure moves only the outside group; FortiGate HA link monitoring covers this in the real design.
 - DHCP: FW01 leases the lower half of each pool, FW02 the upper half; either can fail.

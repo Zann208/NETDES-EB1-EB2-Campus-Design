@@ -28,6 +28,23 @@ ip dhcp snooping vlan {{ snoop_vlans }}
 no ip dhcp snooping information option
 !
 {%- endif %}
+{%- for p in portchannels %}
+interface Port-channel{{ p.po }}
+ description {{ p.desc }}
+{%- if l3cap %}
+ switchport trunk encapsulation dot1q
+{%- endif %}
+ switchport mode trunk
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan {{ p.allowed }}
+{%- if p.root_guard %}
+ spanning-tree guard root
+{%- endif %}
+{%- if p.trust %}
+ ip dhcp snooping trust
+{%- endif %}
+{%- endfor %}
+!
 {%- for i in uplinks %}
 interface {{ i.port }}
  description {{ i.desc }}
@@ -52,22 +69,7 @@ interface {{ i.port }}
  no shutdown
 {%- endfor %}
 !
-{%- for p in portchannels %}
-interface Port-channel{{ p.po }}
- description {{ p.desc }}
-{%- if l3cap %}
- switchport trunk encapsulation dot1q
-{%- endif %}
- switchport mode trunk
- switchport trunk native vlan 999
- switchport trunk allowed vlan {{ p.allowed }}
-{%- if p.root_guard %}
- spanning-tree guard root
-{%- endif %}
-{%- if p.trust %}
- ip dhcp snooping trust
-{%- endif %}
-{%- endfor %}
+
 !
 {%- for e in edges %}
 interface {{ e.port }}
