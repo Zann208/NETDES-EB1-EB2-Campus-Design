@@ -9,11 +9,11 @@ Ready to paste. Every claim links to something in the repository that a reviewer
   14 VLANs summarised to one /19, FortiGate HA as the single L3 point, 57 controller-based Wi-Fi 6 APs, THB 7.45 M sourced BOM.
 - Rebuilt the design as code: a YAML source of truth, a Python validator with 143 automated checks
   (subnet sizing, PoE, uplink failure, media limits, budget) running in GitHub Actions; it caught 3 errors in the submitted report.
-- Generated 15 Cisco IOS configs with Python/Jinja2 (LACP, Rapid-PVST+, HSRP, DHCP, zone ACLs, DHCP snooping, port security)
-  and built a Packet Tracer replica, cabled and addressed through its JavaScript scripting API.
+- Built a Packet Tracer replica whose 15 Cisco IOS lab configs are rendered from the design with Python/Jinja2
+  (LACP, Rapid-PVST+, HSRP, DHCP, zone ACLs, DHCP snooping, port security), cabled and addressed through its scripting API.
 
 Short form (one line): Designed and validated a 1,668-device campus network (3-tier, 14 VLANs, 57 Wi-Fi 6 APs) with a
-Python design-as-code pipeline, 143 automated checks and generated Cisco configs.
+Python design-as-code pipeline, 143 automated checks and a Packet Tracer lab rendered from the design.
 
 Skills line: VLSM / IP planning · VLANs, 802.1Q, LACP, Rapid-PVST+ · HSRP · ACLs · Wi-Fi 6 / WLC design ·
 Cisco IOS · Packet Tracer · Python (PyYAML, Jinja2) · GitHub Actions
@@ -35,7 +35,7 @@ Cisco IOS · Packet Tracer · Python (PyYAML, Jinja2) · GitHub Actions
 > - One YAML file as the source of truth for users, VLANs, links and PoE
 > - A Python validator with 143 checks (subnet sizing, PoE budgets, uplink failure, media limits, budget arithmetic)
 >   running in GitHub Actions. It found three arithmetic errors in our submitted report.
-> - Generated Cisco configs and a Packet Tracer replica of the whole network
+> - A Packet Tracer replica of the whole network, with its Cisco IOS lab configs rendered from the design file
 > - A web console that shows the design, the configs and the live check results
 >
 > Repo: https://github.com/Zann208/NETDES-EB1-EB2-Campus-Design

@@ -9,7 +9,7 @@ Course project, 261434 Computer Network Design and Management (CMU, 1/2026).
 This is a design proposal built from a real site survey. It has not been deployed.
 
 **Console:** [zann208.github.io/NETDES-EB1-EB2-Campus-Design](https://zann208.github.io/NETDES-EB1-EB2-Campus-Design/)
-(topology, IP lookup, AP sizing calculator, generated configs, live check results)
+(topology, IP lookup, AP sizing calculator, Packet Tracer lab configs, live check results)
 
 ![Hierarchical physical topology](diagrams/topology.png)
 
@@ -49,7 +49,7 @@ docs/design.md        the design, condensed from the report
 docs/errata.md        corrections to the submitted report, open items
 docs/portfolio.md     CV and LinkedIn text
 docs/roadmap.md       what is built next
-lab/                  Packet Tracer replica: generated configs, build script, cabling, 28-test plan
+lab/                  Packet Tracer replica: lab configs rendered from the design, build script, cabling, 28-test plan
 ```
 
 ## Verify the design
@@ -67,7 +67,7 @@ the committed configs no longer match the design.
 
 ## Lab
 
-A scaled Packet Tracer replica (15 network devices, WLC and APs) built from generated configs:
+A scaled Packet Tracer replica (15 network devices, WLC and APs) whose lab configs are rendered from the design:
 LACP bundles, Rapid-PVST+ with a fixed root, HSRP gateway redundancy standing in for FortiGate HA,
 split DHCP, zone-policy ACLs, DHCP snooping, BPDU Guard and port security. See [lab/README.md](lab/README.md).
 
