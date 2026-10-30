@@ -71,6 +71,8 @@ A scaled Packet Tracer replica (15 network devices, WLC and APs) built from gene
 LACP bundles, Rapid-PVST+ with a fixed root, HSRP gateway redundancy standing in for FortiGate HA,
 split DHCP, zone-policy ACLs, DHCP snooping, BPDU Guard and port security. See [lab/README.md](lab/README.md).
 
+![Packet Tracer lab](lab/pt-topology.png)
+
 ## Status
 
 Report and presentation delivered October 2026. Open items (heatmap re-runs for two floors,

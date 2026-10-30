@@ -1,5 +1,10 @@
 # Packet Tracer lab
 
+![Packet Tracer topology](pt-topology.png)
+
+Open `NETDES-EB1-EB2.pkt` in Packet Tracer 9.0. Zones: ITSC (grey), EB2 server room (red), EB1 (green), EB2 floors (blue), lab notes (yellow).
+Orange link dots on the EB2 floor 2-3 backup links are STP alternate ports, as designed.
+
 A working, scaled replica of the design. Every config here is generated from
 `design/network.yaml`, so the lab and the design cannot drift apart.
 
